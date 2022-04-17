@@ -1,0 +1,4 @@
+[17-Apr-2022 14:05:00 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/customer/www/yourvalue.com.au/public_html/vendor/autoload.php' (include_path='.:/usr/local/php80/pear') in /home/customer/www/yourvalue.com.au/public_html/index.php:22
+Stack trace:
+#0 {main}
+  thrown in /home/customer/www/yourvalue.com.au/public_html/index.php on line 22

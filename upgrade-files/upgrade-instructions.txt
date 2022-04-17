@@ -1,0 +1,7 @@
+This upgrade (v1.3.1) includes:
+
+1. Pagination showing all reviews on company page (on v1.3 it was only showing the most recent 10 reviews instead) 
+
+To upgrade, simply copy & overwrite the files in /upgrade-files/files/ folder
+
+'/upgrade-files/files/resources/views/review-single.blade.php' => 'resources/views/review-single.blade.php',
