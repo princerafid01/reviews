@@ -104,6 +104,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
     
     Route::get('/', 'AdminController@dashboard');
 
+
+    // Sub Sub Categories
+    Route::post('/subcategories', 'SubCategoryController@create');
+
     // categories
     Route::get( 'categories', 'AdminController@categories' );
     Route::post('update_category', 'AdminController@update_category');
