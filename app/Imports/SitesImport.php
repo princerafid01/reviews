@@ -23,7 +23,7 @@ class SitesImport implements ToModel, WithHeadingRow, SkipsOnError
         return new Sites([
             'url' => $url, 
             'business_name' => $row['business_name'], 
-            'submittedBy' => auth()->user()->id, 
+            'submittedBy' => 1, 
             'lati' => $row['latitude'], 
             'longi' => $row['longitude'], 
             'location' => $row['location'], 

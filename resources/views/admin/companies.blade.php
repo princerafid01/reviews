@@ -30,7 +30,7 @@
                             <div id="collapseOne" class="panel-collapse collapse" aria-expanded="true" style="">
                                 <div class="box-body">
                                     <form action="companies/bulk-import" method="post" enctype="multipart/form-data">
-                                        @csrf
+                                        {!! csrf_field() !!}
                                         <div class="form-group">
                                             <input type="file" name="file" class="pull-left" style="padding-top: 7px" required>
                                             <button type="submit" class="btn btn-primary">Import</button>
