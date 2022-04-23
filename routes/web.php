@@ -125,6 +125,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
     // bulk import
     Route::get( 'bulk', 'AdminController@bulk' );
     Route::post( 'bulk-import', 'AdminController@bulkImport' );
+    
 
     // users
     Route::get( 'users', 'AdminController@users' );
@@ -133,6 +134,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
 
     // reviews
     Route::get( 'reviews', 'AdminController@reviews' );
+    Route::post( 'reviews/bulk-import', 'AdminController@bulk_import_review' );
+    Route::get( 'reviews/demo-export', 'AdminController@demo_import_review' )->name('review.demo.export');
+
+
     Route::get( 'reviews/approve/{review}', 'AdminController@approveReview' );
     Route::get( 'reviews/edit/{review}', 'AdminController@editReview' );
     Route::post( 'reviews/update/{review}', 'AdminController@updateReview' );

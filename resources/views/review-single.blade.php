@@ -104,7 +104,7 @@
 
                     <div class="row">
                     <div class="col-md-2 col-3 text-center">
-                        <img src="{{ $r->user->profileThumb }}" alt="profile pic" class="img-fluid rounded-circle shadow">
+                        <img src="{{ $r->user->profileThumb ?? '' }}" alt="profile pic" class="img-fluid rounded-circle shadow">
                         <p class="text-muted">
                             <strong>{{ $r->reviewer }}</strong>
                             <br>

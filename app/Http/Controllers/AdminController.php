@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReviewsExport;
 use App\Exports\SitesExport;
+use App\Imports\ReviewsImport;
 use App\Imports\SitesImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -182,6 +184,20 @@ class AdminController extends Controller
     {
         return Excel::download(new SitesExport, 'demo.xlsx');
     }
+
+    public function bulk_import_review(Request $request)
+    {
+        $file = $request->file('file');
+        Excel::import(new ReviewsImport, $file);
+        return back()->withMsg('Excel File Imported Successfully')->withStatus('success');
+    }
+
+    public function demo_import_review()
+    {
+        return Excel::download(new ReviewsExport, 'demo.xlsx');
+    }
+
+    
 
     // delete company
     public function deleteCompany( $company ) {
