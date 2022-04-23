@@ -115,6 +115,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
 
     // companies
     Route::get( 'companies', 'AdminController@companies' );
+    Route::post( 'companies/bulk-import', 'AdminController@bulk_import_company' );
+    Route::get( 'companies/demo-export', 'AdminController@demo_import_company' )->name('company.demo.export');
     Route::get( 'companies/delete/{id}', 'AdminController@deleteCompany' );
     Route::get( 'companies/approve/{id}', 'AdminController@approveCompany' );
     Route::get( 'companies/edit/{id}', 'AdminController@editCompany' );

@@ -9,6 +9,8 @@ class Sites extends Model
 {
 
     use \Rinvex\Categories\Traits\Categorizable;
+
+    protected $guarded = [];
     
     /**
      * Get the route key for the model.
