@@ -137,9 +137,9 @@
         
 
         @if( session('msg') )
-        <div class="alert alert-info alert-dismissible">
+        <div class="alert alert-{{session('status') ?? 'info'}} alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-info"></i> Alert!</h4>
+        <h4><i class="icon fa fa-info"></i> {{session('status') ? ucfirst(session('status')) : 'Alert!'}}!</h4>
         {!! session('msg') !!}
         </div>
         @endif
@@ -161,7 +161,7 @@
           <div class="box-body">
           @yield('section_body', 'Body')
           </div>
-          <div class="box-footer"></div>
+          {{-- <div class="box-footer"></div> --}}
         </div>
 
         @yield('extra_bottom') 

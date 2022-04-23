@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SitesExport;
+use App\Imports\SitesImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -19,7 +21,7 @@ use Rinvex\Categories\Models\Category;
 use Mail;
 use Options;
 use Artisan;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -167,6 +169,18 @@ class AdminController extends Controller
 
         return view( 'admin/companies', compact( 'pending_companies', 'companies', 'active' ));
 
+    }
+
+    public function bulk_import_company(Request $request)
+    {
+        $file = $request->file('file');
+        Excel::import(new SitesImport, $file);
+        return back()->withMsg('Excel File Imported Successfully')->withStatus('success');
+    }
+
+    public function demo_import_company()
+    {
+        return Excel::download(new SitesExport, 'demo.xlsx');
     }
 
     // delete company
