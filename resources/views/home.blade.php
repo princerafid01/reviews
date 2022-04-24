@@ -24,7 +24,7 @@
             </p>
             <div class="row">
             <div class="col-4 col-md-3">
-                <img src="{{ $r->user->profileThumb }}" alt="profile pic" class="img-fluid rounded-circle shadow">
+                <img src="{{ $r->user->profileThumb ?? asset('/public/no-img.png') }}" alt="profile pic" class="img-fluid rounded-circle shadow">
             </div><!-- /.col-xs-6 col-md-1 -->
             <div class="col-8 col-md-8 text-muted">
                 <strong>{{ $r->reviewer }}</strong> {{ __('reviewed') }}<br>
