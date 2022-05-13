@@ -9,7 +9,7 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 class AppCategory extends Model
 {
     use HasTranslations;
-    use HasRecursiveRelationships;
+    // use HasRecursiveRelationships;
     /**
      * The table associated with the model.
      *
@@ -21,4 +21,14 @@ class AppCategory extends Model
         'name',
         'description',
     ];
+
+    public function scopeRoot($query)
+    {
+        $query->whereNull('parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
 }

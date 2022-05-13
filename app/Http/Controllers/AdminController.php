@@ -123,9 +123,11 @@ class AdminController extends Controller
 
         }        
         
-        $main_categories = AppCategory::treeOf(function ($query) {
-            $query->whereNull('parent_id');
-        })->get()->toTree();
+        // $main_categories = AppCategory::treeOf(function ($query) {
+        //     $query->whereNull('parent_id');
+        // })->get()->toTree();
+
+        $main_categories = AppCategory::root()->get();
 
         $categories = Category::orderBy('name')->get();
         $active = 'categories';
