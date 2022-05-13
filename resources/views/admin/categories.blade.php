@@ -87,7 +87,7 @@
                             <tbody id="wrapper-group">
                                 <tr>
                                     <th style="width: 30%">Sub Categories</th>
-                                    <th style="width: 70%">Sub Sub Categories(Put Comma between)</th>
+                                    <th style="width: 70%">Sub Sub Categories(Press enter after writing any sub sub Category)</th>
                                 </tr>
                                 @foreach ($c->children as $sub_cat)
                                     <tr class="reusable-group">
@@ -150,6 +150,12 @@
 
 @section('admin_style')
     <link rel="stylesheet" href={{ asset('resources/assets/admin/plugins/bootstarp-tags/css/bootstrap-tagsinput.css') }}>
+    <style>
+        .modal-content {
+            width: 715px;
+            margin: 0 auto;
+        }
+    </style>
 @endsection
 
 @section('admin_script')
