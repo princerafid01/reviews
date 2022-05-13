@@ -6,15 +6,9 @@
 
 @section('section_body')
 
-
-
     <div class="row">
         <div class="col-md-12">
             <div class="box box-solid">
-                {{-- <div class="box-header with-border">
-                    <h3 class="box-title">Companies</h3>
-                </div> --}}
-
                 <div class="box-body">
                     <div class="box-group" id="accordion">
 
@@ -30,7 +24,7 @@
                             <div id="collapseOne" class="panel-collapse collapse" aria-expanded="true" style="">
                                 <div class="box-body">
                                     <form action="companies/bulk-import" method="post" enctype="multipart/form-data">
-                                        {!! csrf_field() !!}
+                                        @csrf
                                         <div class="form-group">
                                             <input type="file" name="file" class="pull-left" style="padding-top: 7px" required>
                                             <button type="submit" class="btn btn-primary">Import</button>

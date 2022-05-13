@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AppCategory;
 use App\Exports\ReviewsExport;
 use App\Exports\SitesExport;
 use App\Imports\ReviewsImport;
@@ -120,12 +121,16 @@ class AdminController extends Controller
 
             $catID = $c->id;
 
-        }
+        }        
+        
+        $main_categories = AppCategory::treeOf(function ($query) {
+            $query->whereNull('parent_id');
+        })->get()->toTree();
 
         $categories = Category::orderBy('name')->get();
         $active = 'categories';
 
-        return view( 'admin/categories', compact( 'categories', 'catname', 'catID', 'active' ) );
+        return view( 'admin/categories', compact( 'categories', 'catname', 'catID', 'active', 'main_categories' ) );
 
     }
 
@@ -195,6 +200,22 @@ class AdminController extends Controller
     public function demo_import_review()
     {
         return Excel::download(new ReviewsExport, 'demo.xlsx');
+    }
+
+    public function delete_category(AppCategory $category )
+    {
+        $category->delete();
+        return back()->withMsg('Sub Sub Category Deleted Successfully')->withStatus('success');
+    }
+
+    public function delete_subcategory(AppCategory $category )
+    {
+        $category->delete();
+        $sub_sub_cats = AppCategory::whereParentId($category->id)->get(); 
+        foreach ($sub_sub_cats as $sub_sub_cat) {
+            $sub_sub_cat->delete();
+        } 
+        return back()->withMsg('Sub Category and Sub Sub Category Deleted Successfully')->withStatus('success'); 
     }
 
     

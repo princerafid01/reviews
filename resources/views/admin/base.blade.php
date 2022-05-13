@@ -39,6 +39,7 @@
     <script src="{{ asset('resources/assets/admin/js/countries.js') }}"></script>
     <!-- select2 -->
     <script src="{{ asset('resources/assets/admin/plugins/select2/select2.min.js') }}"></script>
+    @yield('admin_style')
     <script>
     $(function() {
       $(".js-example-basic-multiple").select2({

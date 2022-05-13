@@ -112,6 +112,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
     Route::get( 'categories', 'AdminController@categories' );
     Route::post('update_category', 'AdminController@update_category');
     Route::post( 'add_category', 'AdminController@add_category' );
+    Route::get( 'delete_category/{category}', 'AdminController@delete_category' );
+    Route::get( 'delete_sub_category/subsubcat/{category}', 'AdminController@delete_subcategory' );
 
     // companies
     Route::get( 'companies', 'AdminController@companies' );

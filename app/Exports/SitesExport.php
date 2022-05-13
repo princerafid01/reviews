@@ -12,6 +12,8 @@ class SitesExport implements FromCollection
     */
     public function collection()
     {
-        return collect([['URL' , 'Business Name','Latitude','Longitude','Location']]);
+        return collect([
+            ['URL' , 'Business Name','Latitude','Longitude','Location' , 'Category' , 'Sub Category', 'Sub Sub Category']
+        ]);
     }
 }
