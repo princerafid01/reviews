@@ -9,9 +9,8 @@ use App\Imports\ReviewsImport;
 use App\Imports\SitesImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 
 use App\Sites;
 use App\User;
@@ -29,21 +28,24 @@ use Maatwebsite\Excel\Facades\Excel;
 class AdminController extends Controller
 {
 
-   // GET|POST /admin/login
-    public function login() {
+    // GET|POST /admin/login
+    public function login()
+    {
 
         $message = '';
 
-        if( \Request::isMethod('post') ) {
-            if( \Input::has('ausername') AND \Input::has('apassword') ) {
-                if( \Input::get('ausername') == env('ADMIN_USER') AND 
-                    \Input::get('apassword') == env('ADMIN_PASS') ) {
+        if (\Request::isMethod('post')) {
+            if (\Input::has('ausername') and \Input::has('apassword')) {
+                if (
+                    \Input::get('ausername') == env('ADMIN_USER') and
+                    \Input::get('apassword') == env('ADMIN_PASS')
+                ) {
                     \Session::put('admin', 'true');
                     return redirect('admin');
-                }else{
-                    $message = '<div class="alert alert-danger">Invalid login.</div>';  
+                } else {
+                    $message = '<div class="alert alert-danger">Invalid login.</div>';
                 }
-            }else{
+            } else {
                 $message = '<div class="alert alert-danger">User/password required</div>';
             }
         }
@@ -52,60 +54,73 @@ class AdminController extends Controller
     }
 
     // GET /admin/logout
-    public function logout() {
+    public function logout()
+    {
         \Session::forget('admin');
         return redirect('/admin/login');
     }
 
-    public function dashboard() {
-        
-        $figures = [  ];
+    public function dashboard()
+    {
+
+        $figures = [];
 
         // get total # of companies
         $companies = Sites::count();
-        $figures[ 'companies' ] = $companies;
+        $figures['companies'] = $companies;
 
         // get total # of reviews
         $reviews = Reviews::count();
-        $figures[ 'reviews' ] = $reviews;
+        $figures['reviews'] = $reviews;
 
         // earnings past 30 days
-        $date = strtotime( '31 days ago' );
+        $date = strtotime('31 days ago');
 
         $days = Subscriptions::select(array(
-                \DB::raw('FROM_UNIXTIME(`subscription_date`, "%Y-%d-%m" ) as `date`'),
-                \DB::raw('SUM(`subscription_price`) as `total`')
-            ))
+            \DB::raw('FROM_UNIXTIME(`subscription_date`, "%Y-%d-%m" ) as `date`'),
+            \DB::raw('SUM(`subscription_price`) as `total`')
+        ))
             ->where('subscription_date', '>', $date)
             ->groupBy('date')
             ->orderBy('date', 'DESC')
-            ->pluck('date','total');
+            ->pluck('date', 'total');
 
         // monthly value
-        $monthlyPlans = Subscriptions::wherePlan( 'monthly' )
-                                        ->where( 'subscription_status', 'Active' )
-                                        ->sum('id');
-        $halfYearPlans = Subscriptions::wherePlan( '6months' )
-                                        ->where( 'subscription_status', 'Active' )
-                                        ->sum('id');
-        $yearlyPlans = Subscriptions::wherePlan( 'yearly' )
-                                        ->where( 'subscription_status', 'Active' )
-                                        ->sum('id');
+        $monthlyPlans = Subscriptions::wherePlan('monthly')
+            ->where('subscription_status', 'Active')
+            ->sum('id');
+        $halfYearPlans = Subscriptions::wherePlan('6months')
+            ->where('subscription_status', 'Active')
+            ->sum('id');
+        $yearlyPlans = Subscriptions::wherePlan('yearly')
+            ->where('subscription_status', 'Active')
+            ->sum('id');
         // 
 
-        return view( 'admin/dashboard', compact( 'figures', 'days', 'monthlyPlans', 
-                                                    'halfYearPlans', 'yearlyPlans' ) );
-
+        return view('admin/dashboard', compact(
+            'figures',
+            'days',
+            'monthlyPlans',
+            'halfYearPlans',
+            'yearlyPlans'
+        ));
     }
 
-    public function categories(  ) {
+    public function categories()
+    {
 
         // if remove
-        if( $removeId = \Input::get('remove') ) {
+        if ($removeId = \Input::get('remove')) {
 
             // remove from db            
-            $d = Category::where('id', $removeId )->delete();
-            
+            $d = Category::where('id', $removeId)->delete();
+            $remove_cats = AppCategory::where('parent_id', $removeId)->get();
+
+            foreach ($remove_cats as $cats) {
+                $cats->delete();
+            }
+
+
             return redirect('admin/categories')->with('msg', 'Successfully removed category');
         }
 
@@ -113,16 +128,15 @@ class AdminController extends Controller
         // if update
         $catname = '';
         $catID = '';
-        if( $updateCat = \Input::get( 'update' ) ) {
+        if ($updateCat = \Input::get('update')) {
 
             // find category
-            $c = Category::find( $updateCat );
+            $c = Category::find($updateCat);
             $catname = $c->name;
 
             $catID = $c->id;
+        }
 
-        }        
-        
         // $main_categories = AppCategory::treeOf(function ($query) {
         //     $query->whereNull('parent_id');
         // })->get()->toTree();
@@ -132,43 +146,44 @@ class AdminController extends Controller
         $categories = Category::orderBy('name')->get();
         $active = 'categories';
 
-        return view( 'admin/categories', compact( 'categories', 'catname', 'catID', 'active', 'main_categories' ) );
-
+        return view('admin/categories', compact('categories', 'catname', 'catID', 'active', 'main_categories'));
     }
 
     // add category
-    public function add_category( Request $r  ) {
+    public function add_category(Request $r)
+    {
 
-        $this->validate( $r, [ 'catname' => 'required' ] );
+        $this->validate($r, ['catname' => 'required']);
 
-        $c = app('rinvex.categories.category')->create([ 'name' => ['en' => $r->catname] ]);
+        $c = app('rinvex.categories.category')->create(['name' => ['en' => $r->catname]]);
 
-        return redirect( 'admin/categories' )->with( 'msg', 'Category successfully created.' );
-        
+        return redirect('admin/categories')->with('msg', 'Category successfully created.');
     }
 
     // update category
-    public function update_category( Request $r  ) {
+    public function update_category(Request $r)
+    {
 
-        $this->validate( $r, [ 'catname' => 'required' ] );
+        $this->validate($r, ['catname' => 'required']);
 
-        $c = app('rinvex.categories.category')->find( $r->catID );
+        $c = app('rinvex.categories.category')->find($r->catID);
         $c->name = $r->catname;
         $c->save();
 
-        return redirect( 'admin/categories' )->with( 'msg', 'Category successfully updated.' );
-        
+        return redirect('admin/categories')->with('msg', 'Category successfully updated.');
     }
 
     // set category
-    private function __updateCompanyCategory( Sites $p, int $categoryId ): object {
-        return $p->syncCategories( $categoryId, true);
+    private function __updateCompanyCategory(Sites $p, int $categoryId): object
+    {
+        return $p->syncCategories($categoryId, true);
     }
 
 
     // companies
-    public function companies(  ) {
-        
+    public function companies()
+    {
+
         // get companies
         $pending_companies = Sites::wherePublish('no')->orderBy('id')->get();
         $companies = Sites::wherePublish('yes')->orderByDesc('id')->get();
@@ -176,14 +191,16 @@ class AdminController extends Controller
 
         $active = 'companies';
 
-        return view( 'admin/companies', compact( 'pending_companies', 'companies', 'active' ));
-
+        return view('admin/companies', compact('pending_companies', 'companies', 'active'));
     }
 
     public function bulk_import_company(Request $request)
     {
         $file = $request->file('file');
+        //  Handle Imports
         Excel::import(new SitesImport, $file);
+        //  Handle Import After
+        $this->handleSiteImportAfter($file);
         return back()->withMsg('Excel File Imported Successfully')->withStatus('success');
     }
 
@@ -204,26 +221,27 @@ class AdminController extends Controller
         return Excel::download(new ReviewsExport, 'demo.xlsx');
     }
 
-    public function delete_category(AppCategory $category )
+    public function delete_category(AppCategory $category)
     {
         $category->delete();
         return back()->withMsg('Sub Sub Category Deleted Successfully')->withStatus('success');
     }
 
-    public function delete_subcategory(AppCategory $category )
+    public function delete_subcategory(AppCategory $category)
     {
         $category->delete();
-        $sub_sub_cats = AppCategory::whereParentId($category->id)->get(); 
+        $sub_sub_cats = AppCategory::whereParentId($category->id)->get();
         foreach ($sub_sub_cats as $sub_sub_cat) {
             $sub_sub_cat->delete();
-        } 
-        return back()->withMsg('Sub Category and Sub Sub Category Deleted Successfully')->withStatus('success'); 
+        }
+        return back()->withMsg('Sub Category and Sub Sub Category Deleted Successfully')->withStatus('success');
     }
 
-    
+
 
     // delete company
-    public function deleteCompany( $company ) {
+    public function deleteCompany($company)
+    {
 
         $company = Sites::findOrFail($company);
 
@@ -233,62 +251,63 @@ class AdminController extends Controller
         // delete this company
         $company->delete();
 
-        return redirect( 'admin/companies' )->with( 'msg', 'Company successfully removed.' );
-
+        return redirect('admin/companies')->with('msg', 'Company successfully removed.');
     }
 
     // approve company
-    public function approveCompany( $company ) {
+    public function approveCompany($company)
+    {
 
         $company = Sites::findOrFail($company);
-        
+
         // approve this company
         $company->publish = 'yes';
         $company->save();
 
         // email the submitter 
-        $data[ 'message' ] = sprintf('The business you suggested %s
+        $data['message'] = sprintf(
+            'The business you suggested %s
                               Location: %s
                               Site URL: %s
                               %s Good news, it was approved and is now live on our website.
-                              %s You can find it at %s', 
+                              %s You can find it at %s',
 
-                                '<strong>'.$company->business_name.'</strong><br>', 
-                                $company->location . '<br>',
-                                '<a href="https://'.$company->url.'">' . $company->url . '</a>',
-                                '<br><hr><br>',
-                                '<br>', 
-                                route( 'reviewsForSite', ['site' =>$company->url] )
-                                );
+            '<strong>' . $company->business_name . '</strong><br>',
+            $company->location . '<br>',
+            '<a href="https://' . $company->url . '">' . $company->url . '</a>',
+            '<br><hr><br>',
+            '<br>',
+            route('reviewsForSite', ['site' => $company->url])
+        );
 
-        $data[ 'intromessage' ] = __('New business approved');
-        $data[ 'url' ] = route( 'reviewsForSite', [ 'site' => $company->url ]);
-        $data[ 'buttonText' ] = __('See Listing');
+        $data['intromessage'] = __('New business approved');
+        $data['url'] = route('reviewsForSite', ['site' => $company->url]);
+        $data['buttonText'] = __('See Listing');
 
         $submitterEmail = $company->submitter->email;
-        Mail::to($submitterEmail)->send( new EmailNotification( $data ) );
+        Mail::to($submitterEmail)->send(new EmailNotification($data));
 
-        return redirect( 'admin/companies' )->with( 'msg', 'Company successfully approved.' );
-
+        return redirect('admin/companies')->with('msg', 'Company successfully approved.');
     }
 
     // edit company
-    public function editCompany( $company ) {
+    public function editCompany($company)
+    {
 
         $company = Sites::findOrFail($company);
-            
+
         $categories = app('rinvex.categories.category')->all();
         $active = 'companies';
 
-        return view( 'admin/edit-company', compact( 'company', 'categories', 'active' ) );
-
+        return view('admin/edit-company', compact('company', 'categories', 'active'));
     }
 
     // update company
-    public function updateCompany( $company, Request $r ) {
-        
+    public function updateCompany($company, Request $r)
+    {
+
         $company = Sites::findOrFail($company);
-        
+
         $company->url = $r->url;
         $company->business_name = $r->name;
         $company->location  = $r->city_region;
@@ -296,26 +315,26 @@ class AdminController extends Controller
         $company->longi = $r->longi;
         $company->save();
 
-        $this->__updateCompanyCategory( $company, $r->category_id );
+        $this->__updateCompanyCategory($company, $r->category_id);
 
-        return redirect( 'admin/companies' )->with( 'msg', 'Company successfully updated.' );
-
+        return redirect('admin/companies')->with('msg', 'Company successfully updated.');
     }
 
 
     // users overview
-    public function users(  ) {
-        
-        $users = User::orderByDesc( 'id' )->get();
+    public function users()
+    {
+
+        $users = User::orderByDesc('id')->get();
         $active = 'users';
 
-        return view( 'admin/users', compact( 'users','active' ) );
-
+        return view('admin/users', compact('users', 'active'));
     }
 
     // delete user
-    public function deleteUser( User $user ) {
-        
+    public function deleteUser(User $user)
+    {
+
         // delete user reviews
         $user->reviews()->delete();
 
@@ -326,41 +345,39 @@ class AdminController extends Controller
         $user->delete();
 
         // redirect
-        return redirect( 'admin/users' )->with( 'msg', 'User and all data associated successfully removed.' );
-
+        return redirect('admin/users')->with('msg', 'User and all data associated successfully removed.');
     }
 
     // manually assign company to user
-    public function manuallyAssignCompany( User $user ) {
+    public function manuallyAssignCompany(User $user)
+    {
 
-        if( request()->has( 'companyID' ) ) {
+        if (request()->has('companyID')) {
 
-            if( is_null(request()->companyID) ) {
-                
+            if (is_null(request()->companyID)) {
+
                 // remove claimed by
                 $currentUserCompany = $user->company;
 
-                if( $currentUserCompany ) {
+                if ($currentUserCompany) {
 
-                    $site = Sites::find( $currentUserCompany->id );
+                    $site = Sites::find($currentUserCompany->id);
                     $site->claimedBy = null;
                     $site->save();
                 }
-
-
-            }else{
+            } else {
 
                 // remove claimed by
-                $sites = Sites::where( 'claimedBy', $user->id )->get();
+                $sites = Sites::where('claimedBy', $user->id)->get();
 
-                foreach( $sites as $site ) {
+                foreach ($sites as $site) {
                     $site->claimedBy = null;
                     $site->save();
                 }
 
-                
+
                 // set claimed by
-                $site = Sites::find( request()->companyID );
+                $site = Sites::find(request()->companyID);
                 $site->claimedBy = $user->id;
                 $site->save();
 
@@ -377,175 +394,180 @@ class AdminController extends Controller
 
             }
 
-            return back()->with( 'msg', 'Assignment successfully saved');
-
+            return back()->with('msg', 'Assignment successfully saved');
         }
-        
+
         // get unassigned companies
-        $companies = Sites::whereNull( 'claimedBy' )->orderBy('business_name')->get();
+        $companies = Sites::whereNull('claimedBy')->orderBy('business_name')->get();
 
-        return view( 'admin/manually-assign-company', compact( 'user', 'companies' ) );
-
+        return view('admin/manually-assign-company', compact('user', 'companies'));
     }
 
     // reviews overview
-    public function reviews(  ) {
-        
+    public function reviews()
+    {
+
         // get reviews
         $pending_reviews = Reviews::wherePublish('no')->orderBy('id')->get();
         $reviews = Reviews::wherePublish('yes')->orderByDesc('id')->get();
 
         $active = 'reviews';
 
-        return view( 'admin/reviews', compact( 'pending_reviews', 'reviews', 'active' ));
-
+        return view('admin/reviews', compact('pending_reviews', 'reviews', 'active'));
     }
 
     // approve review
-    public function approveReview( Reviews $review ) {
-        
+    public function approveReview(Reviews $review)
+    {
+
         // approve this review
         $review->publish = 'yes';
         $review->save();
 
         // email the submitter 
-        $data[ 'message' ] = sprintf('Hi there, 
+        $data['message'] = sprintf(
+            'Hi there, 
                             Good news, your review was approved and is now live on our website.
-                            %s You can find it at %s', 
+                            %s You can find it at %s',
 
-                            '<br>', route( 'reviewsForSite', ['site' =>$review->site->url] ));
+            '<br>',
+            route('reviewsForSite', ['site' => $review->site->url])
+        );
 
-        $data[ 'intromessage' ] = 'Your Review Was Approved';
-        $data[ 'url' ] = route( 'reviewsForSite', [ 'site' => $review->site->url ]);
-        $data[ 'buttonText' ] = 'See Review';
+        $data['intromessage'] = 'Your Review Was Approved';
+        $data['url'] = route('reviewsForSite', ['site' => $review->site->url]);
+        $data['buttonText'] = 'See Review';
 
         $submitterEmail = $review->user->email;
-        Mail::to($submitterEmail)->send( new EmailNotification( $data ) );
+        Mail::to($submitterEmail)->send(new EmailNotification($data));
 
         // email the owner ( if any )
-        if( !is_null($review->site->claimedBy) AND !is_null( $review->site->metadata ) ) {
-            if( isset( $review->site->metadata[ 'notifications_email' ] ) ) {
+        if (!is_null($review->site->claimedBy) and !is_null($review->site->metadata)) {
+            if (isset($review->site->metadata['notifications_email'])) {
 
                 // is this user subscription active?
                 $userID = $review->site->claimedBy;
 
-                $isSubscriptionActive = Subscriptions::where( 'site_id', $review->site->id )
-                            ->where( 'user_id', $userID )
-                            ->where( 'subscription_status', 'Active' )
-                            ->exists();
+                $isSubscriptionActive = Subscriptions::where('site_id', $review->site->id)
+                    ->where('user_id', $userID)
+                    ->where('subscription_status', 'Active')
+                    ->exists();
 
-                if( $isSubscriptionActive ) {
+                if ($isSubscriptionActive) {
 
-                    $data[ 'message' ] = sprintf('Hi there, 
+                    $data['message'] = sprintf(
+                        'Hi there, 
                                   Your company has received a review and is now live on our website.
-                                  %s You can find it at %s', 
+                                  %s You can find it at %s',
 
-                                '<br>',
-                                route( 'reviewsForSite', ['site' =>$review->site->url] ));
+                        '<br>',
+                        route('reviewsForSite', ['site' => $review->site->url])
+                    );
 
-                    $data[ 'intromessage' ] = __('Your Company New Review');
-                    $data[ 'url' ] = route( 'reviewsForSite', [ 'site' => $review->site->url ]);
-                    $data[ 'buttonText' ] = __('See Review');
+                    $data['intromessage'] = __('Your Company New Review');
+                    $data['url'] = route('reviewsForSite', ['site' => $review->site->url]);
+                    $data['buttonText'] = __('See Review');
 
-                    $claimerEmail = $review->site->metadata[ 'notifications_email' ];
-                    Mail::to($claimerEmail)->send( new EmailNotification( $data ) );
-
+                    $claimerEmail = $review->site->metadata['notifications_email'];
+                    Mail::to($claimerEmail)->send(new EmailNotification($data));
                 }
-
             }
         }
 
-        return redirect( 'admin/reviews' )->with( 'msg', 'Review successfully approved.' );
-
+        return redirect('admin/reviews')->with('msg', 'Review successfully approved.');
     }
 
     // edit review
-    public function editReview( Reviews $r ) {
-        
+    public function editReview(Reviews $r)
+    {
+
         $active = 'reviews';
 
-        return view( 'admin/edit-review', compact( 'r', 'active' ) );
-
+        return view('admin/edit-review', compact('r', 'active'));
     }
 
     // update review
-    public function updateReview( Reviews $r, Request $req ) {
+    public function updateReview(Reviews $r, Request $req)
+    {
 
         // validate
-        $this->validate( $req, [ 'rating' => 'required|integer|between:1,5',
-                                     'review_title' => 'required|min:2',
-                                     'review_content' => 'required|min:5']);
-        
+        $this->validate($req, [
+            'rating' => 'required|integer|between:1,5',
+            'review_title' => 'required|min:2',
+            'review_content' => 'required|min:5'
+        ]);
+
         $r->rating = $req->rating;
         $r->review_title = $req->review_title;
         $r->review_content = $req->review_content;
         $r->save();
 
-        return redirect( 'admin/reviews' )->with( 'msg', 'Review successfully updated.' );
-
+        return redirect('admin/reviews')->with('msg', 'Review successfully updated.');
     }
 
     // delete review
-    public function deleteReview( Reviews $r ) {
-        
+    public function deleteReview(Reviews $r)
+    {
+
         // delete this company reviews
         $r->delete();
 
-        return redirect( 'admin/reviews' )->with( 'msg', 'Review successfully removed.' );
-
+        return redirect('admin/reviews')->with('msg', 'Review successfully removed.');
     }
 
     // pages controller
-    public function pages() {
-        
+    public function pages()
+    {
+
         // get existent pages
         $pages = Page::all();
 
         return view('admin.pages')->with('pages', $pages)
-                                  ->with('active', 'pages');
+            ->with('active', 'pages');
     }
 
     // create a page
-    public function create_page( Request $r ) {
-        
+    public function create_page(Request $r)
+    {
+
         // validate form entries
-        $this->validate( $r, ['page_title' => 'unique:pages|required']);
+        $this->validate($r, ['page_title' => 'unique:pages|required']);
 
         // save page
         $page = new Page;
         $page->page_title = $r->page_title;
-        $page->page_slug  = str_slug( $r->page_title );
+        $page->page_slug  = str_slug($r->page_title);
         $page->page_content = $r->page_content;
         $page->save();
 
         return redirect()->route('admin-cms')->with('msg', 'Page successfully created');
-
     }
 
     // edit page
-    public function editPage( $id ) {
+    public function editPage($id)
+    {
 
         $page = Page::findOrFail($id);
         return view('admin.update-page')->with('p', $page)->with('active', 'pages');
-
     }
 
     // update page
-    public function updatePage( $id, Request $r ) {
-        
+    public function updatePage($id, Request $r)
+    {
+
         $page = Page::findOrFail($id);
         $page->page_title = $r->page_title;
         $page->page_content = $r->page_content;
         $page->save();
 
         return redirect('/admin/cms-edit/' . $id)->with('msg', 'Page successfully created');
-
     }
 
     // delete page
-    public function deletePage( $id ) {
-        
-        if( $id != 1 ) {
+    public function deletePage($id)
+    {
+
+        if ($id != 1) {
             Page::destroy($id);
             $msg = 'Page successfully removed';
         } else {
@@ -554,48 +576,49 @@ class AdminController extends Controller
 
 
         return redirect()->route('admin-cms')->with('msg', $msg);
-
     }
 
     // configuration
-    public function configuration(  ) {
-        
+    public function configuration()
+    {
+
         return view('admin.configuration')->with('active', 'config');
-        
     }
 
     // ads
-    public function ads(  ) {
-        return view( 'admin.ads' )->with( 'active', 'ads' );
+    public function ads()
+    {
+        return view('admin.ads')->with('active', 'ads');
     }
 
     // ads processing
-    public function adsProcessing( Request $r ) {
-        
+    public function adsProcessing(Request $r)
+    {
+
         $options = request()->except('_token', 'sb_settings');
 
         // save options
-        foreach( $options as $name => $value ) {
-            Options::update_option( $name, $value );
+        foreach ($options as $name => $value) {
+            Options::update_option($name, $value);
         }
 
         return redirect('admin/ads')->with('msg', 'Ads successfully saved!');
-
     }
 
     // update configuration
-    public function updateConfiguration( ) {
-        
+    public function updateConfiguration()
+    {
+
         $options = request()->except('_token', 'sb_settings');
 
         // save options
-        foreach( $options as $name => $value ) {
-            Options::update_option( $name, $value );
+        foreach ($options as $name => $value) {
+            Options::update_option($name, $value);
         }
 
         // homepage image updated?
         $headImage = '';
-        if( request()->hasFile('homepage_header_image') ) {
+        if (request()->hasFile('homepage_header_image')) {
             $ext = request()->file('homepage_header_image')->getClientOriginalExtension();
             $destinationPath = public_path();
             $fileName = uniqid(rand()) . '.' . $ext;
@@ -605,7 +628,7 @@ class AdminController extends Controller
 
         // logo image updated?
         $logoImage = '';
-        if( request()->hasFile('logo_image') ) {
+        if (request()->hasFile('logo_image')) {
             $ext = request()->file('logo_image')->getClientOriginalExtension();
             $destinationPath = public_path();
             $fileName = uniqid(rand()) . '.' . $ext;
@@ -616,77 +639,77 @@ class AdminController extends Controller
         }
 
         return redirect('admin/configuration')->with('msg', 'Configuration settings successfully saved!');
-
     }
 
     // mail configuration
-    public function mailconfiguration(  ) {
-        
-        return view( 'admin/mail-configuration', [ 'active' => 'mailconfig' ] );
+    public function mailconfiguration()
+    {
 
+        return view('admin/mail-configuration', ['active' => 'mailconfig']);
     }
 
-     // update mail configuration
-    public function updateMailConfiguration( Request $r ) {
-        
+    // update mail configuration
+    public function updateMailConfiguration(Request $r)
+    {
+
         $i = $r->except(['sb_settings', '_token']);
-        
-        foreach( $i as $k => $v ) {
-            $this->__setEnvironmentValue( $k, $v );
+
+        foreach ($i as $k => $v) {
+            $this->__setEnvironmentValue($k, $v);
         }
 
 
         return redirect('admin/mailconfiguration')->with('msg', 'Mail Configuration settings successfully saved!');
-
     }
 
     // mail test
-    public function mailtest(  ) {
-        
+    public function mailtest()
+    {
 
-        $data[ 'message' ] = 'This is a test email to check your mail server configuration.';
 
-        $data[ 'intromessage' ] = 'Mail Server Configuration';
-        $data[ 'url' ] = env( 'APP_URL' ) . '/admin/mailconfiguration';
-        $data[ 'buttonText' ] = 'See Mail Configuration';
+        $data['message'] = 'This is a test email to check your mail server configuration.';
+
+        $data['intromessage'] = 'Mail Server Configuration';
+        $data['url'] = env('APP_URL') . '/admin/mailconfiguration';
+        $data['buttonText'] = 'See Mail Configuration';
 
         $adminEmail = Options::get_option('adminEmail');
 
         try {
-            $result = Mail::to($adminEmail)->send( new EmailNotification( $data ) );
+            $result = Mail::to($adminEmail)->send(new EmailNotification($data));
             return redirect('admin/mailconfiguration')->with('msg', 'Mail sent to your server, it is up to them to deliver it now.');
-        } catch( \Exception $e ) {
-             return redirect('admin/mailconfiguration')->with('msg', $e->getMessage());
+        } catch (\Exception $e) {
+            return redirect('admin/mailconfiguration')->with('msg', $e->getMessage());
         }
-
-
     }
 
     // bulk form
-    public function bulk(  ) {
-        return view( 'admin/bulk-import', [ 'active' => 'bulk' ] );
+    public function bulk()
+    {
+        return view('admin/bulk-import', ['active' => 'bulk']);
     }
 
     // bulk import
-    public function bulkImport( Request $r ) {
-        
-        $this->validate( $r, ['csv_file' => 'required' ]);
+    public function bulkImport(Request $r)
+    {
 
-        $csv = $r->file( 'csv_file' );
+        $this->validate($r, ['csv_file' => 'required']);
 
-       $handle   = fopen( $csv, 'r' );
+        $csv = $r->file('csv_file');
 
-       $row = 0;
-       $skipped = 0;
+        $handle   = fopen($csv, 'r');
+
+        $row = 0;
+        $skipped = 0;
 
         while (($data = fgetcsv($handle, 0, ",")) !== FALSE) {
 
             // remove scheme from url
-            $uri = str_ireplace([ 'http://', 'https://' ], ['', ''], $data[0]);
-            $uri = rtrim( $uri, '/' );
+            $uri = str_ireplace(['http://', 'https://'], ['', ''], $data[0]);
+            $uri = rtrim($uri, '/');
 
             // check for duplicates
-            if( Sites::whereUrl( $uri )->exists() ) {
+            if (Sites::whereUrl($uri)->exists()) {
                 echo $uri . ' exists<br>';
                 $skipped++;
                 continue;
@@ -707,30 +730,25 @@ class AdminController extends Controller
 
             $categoryName = $data[5];
             $categorySlug = Str::slug($categoryName);
-            $categoryID = \DB::table( 'categories' )->select('id')->whereSlug( $categorySlug )->first();
+            $categoryID = \DB::table('categories')->select('id')->whereSlug($categorySlug)->first();
 
-            if( $categoryID ) {
+            if ($categoryID) {
                 $categoryID = $categoryID->id;
-            }else{
+            } else {
 
                 $c = app('rinvex.categories.category')->create(['name' => ['en' =>  $categoryName], 'slug' => $categorySlug]);
 
                 $categoryID = $c->id;
-
             }
 
             // append category
-            $this->__updateCompanyCategory( $site, $categoryID );
-
-
-        }// the csv lines loop
+            $this->__updateCompanyCategory($site, $categoryID);
+        } // the csv lines loop
 
         // close handle to the temp file
         fclose($handle);
 
-        return back()->with( 'msg', 'Inserted ' . $row . ' companies. ' . $skipped . ' were duplicates.' );
-
-
+        return back()->with('msg', 'Inserted ' . $row . ' companies. ' . $skipped . ' were duplicates.');
     }
 
     private function __setEnvironmentValue($envKey, $envValue)
@@ -739,16 +757,60 @@ class AdminController extends Controller
         $envFile = app()->environmentFilePath();
         $str = file_get_contents($envFile);
 
-        $str = preg_replace('/'.$envKey.'=([^\n]*)/is', $envKey.'='.$envValue, $str);
+        $str = preg_replace('/' . $envKey . '=([^\n]*)/is', $envKey . '=' . $envValue, $str);
 
         $fp = fopen($envFile, 'w');
         $didWrite =  fwrite($fp, $str);
         fclose($fp);
 
         return $didWrite;
-
-
     }
 
+    public function handleSiteImportAfter($file)
+    {
+        $results = @reset(Excel::toArray([], $file));
+        array_shift($results);
 
+        foreach ($results as $value) {
+            $url = $value[0];
+            $category_slug = Str::slug($value[5] ?? '');
+            $sub_category_slug =  Str::slug($value[6] ?? '');
+            $sub_sub_category_slug = Str::slug($value[7] ?? '');
+            $company_id = DB::table('sites')->select('id')->whereUrl($url)->first()->id;
+
+            $cat_id = DB::table('categories')->select('id')->whereSlug($category_slug)->first()->id;
+
+            if ($cat_id) {
+                $cat_ids = DB::table('categorizables')->insert([
+                    'category_id' => $cat_id,
+                    'categorizable_id' => $company_id,
+                    'categorizable_type' => Sites::class,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+
+            $sub_cat_id = DB::table('categories')->select('id')->whereSlug($sub_category_slug)->first()->id;
+            if ($sub_cat_id) {
+                $sub_cat_ids = DB::table('categorizables')->insert([
+                    'category_id' => $sub_cat_id,
+                    'categorizable_id' => $company_id,
+                    'categorizable_type' => Sites::class,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+
+            $sub_sub_cat_id = DB::table('categories')->select('id')->whereSlug($sub_sub_category_slug)->first()->id;
+            if ($sub_sub_cat_id) {
+                $sub_sub_cat_ids = DB::table('categorizables')->insert([
+                    'category_id' => $sub_sub_cat_id,
+                    'categorizable_id' => $company_id,
+                    'categorizable_type' => Sites::class,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+        }
+    }
 }
