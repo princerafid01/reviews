@@ -20,7 +20,7 @@ class SearchController extends Controller
 					->orWhere('business_name', 'LIKE', '%' . $r->searchQuery . '%');
 			})
 			->orWhereHas('categories', function ($query)  use ($r)  {
-				$query->where('slug', 'LIKE', '%' . $r->searchQuery . '%');
+				$query->where('name->en', 'LIKE', '%' . $r->searchQuery . '%');
 			})
 			->simplePaginate('20');
 
