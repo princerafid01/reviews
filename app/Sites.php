@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Options;
+use Rinvex\Categories\Models\Category;
 
 class Sites extends Model
 {
@@ -100,6 +101,11 @@ class Sites extends Model
 
         }
 
+    }
+
+    public function category()
+    {
+        return $this->morphToMany(Category::class, 'categorizable');
     }
 
 

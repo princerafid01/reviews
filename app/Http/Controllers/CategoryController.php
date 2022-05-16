@@ -25,6 +25,7 @@ class CategoryController extends Controller
 
     // browse a single category
     public function browseCategory( $slug ) {
+        
 
     	$categories = [  ];
     	$active = 'categories';
@@ -163,6 +164,8 @@ class CategoryController extends Controller
         $resetURL = url()->current() . '?' . http_build_query( $getParams );
 
         $sites = $sites->paginate(10);
+        
+
 
     	return view( 'browse-category', compact( 'active', 'category', 'seo_title', 
                                                 'resetURL', 'sites', 'location', 'all_categories' ) );
