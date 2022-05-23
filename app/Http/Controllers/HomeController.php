@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AppCategory;
 use App\Reviews;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -16,21 +17,23 @@ class HomeController extends Controller
     public function __invoke()
     {
 
-    	// do we have a return to parameter after login/signup?
-    	if( session()->has( 'return' ) ) {
-    		$ret = session( 'return' );
-			session()->forget( 'return' );
-			
-    		return redirect( $ret );
-    	}
+        // do we have a return to parameter after login/signup?
+        if (session()->has('return')) {
+            $ret = session('return');
+            session()->forget('return');
+
+            return redirect($ret);
+        }
 
         $reviews = Reviews::with('site')
-                        ->wherePublish( 'Yes' )
-                        ->latest()
-                        ->take(12)
-                        ->get();
+            ->wherePublish('Yes')
+            ->latest()
+            ->take(12)
+            ->get();
 
-        return view('home', [ 'activeNav' => 'home', 'reviews' => $reviews ]);
-        
+        // $categories = AppCategory::root()->get();
+        $categories = AppCategory::all();
+
+        return view('home', ['activeNav' => 'home', 'reviews' => $reviews , 'categories' => $categories]);
     }
 }

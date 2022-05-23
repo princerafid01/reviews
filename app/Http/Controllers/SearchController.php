@@ -10,7 +10,6 @@ class SearchController extends Controller
 	// process search form
 	public function search(Request $r)
 	{
-
 		$this->validate($r, ['searchQuery' => 'required|min:2']);
 
 		// find sites based on query
