@@ -776,14 +776,14 @@ class AdminController extends Controller
             $category_slug = Str::slug($value[5] ?? '');
             $sub_category_slug =  Str::slug($value[6] ?? '');
             $sub_sub_category_slug = Str::slug($value[7] ?? '');
-            $company_id = DB::table('sites')->select('id')->whereUrl($url)->first()->id;
+            $company_id = DB::table('sites')->select('id')->whereUrl($url)->first();
 
-            $cat_id = DB::table('categories')->select('id')->whereSlug($category_slug)->first()->id;
+            $cat_id = DB::table('categories')->select('id')->whereSlug($category_slug)->first();
 
             if ($cat_id) {
                 $cat_ids = DB::table('categorizables')->insert([
-                    'category_id' => $cat_id,
-                    'categorizable_id' => $company_id,
+                    'category_id' => $cat_id->id,
+                    'categorizable_id' => $company_id->id,
                     'categorizable_type' => Sites::class,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
@@ -794,7 +794,7 @@ class AdminController extends Controller
             if ($sub_cat_id) {
                 $sub_cat_ids = DB::table('categorizables')->insert([
                     'category_id' => $sub_cat_id,
-                    'categorizable_id' => $company_id,
+                    'categorizable_id' => $company_id->id,
                     'categorizable_type' => Sites::class,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
@@ -805,7 +805,7 @@ class AdminController extends Controller
             if ($sub_sub_cat_id) {
                 $sub_sub_cat_ids = DB::table('categorizables')->insert([
                     'category_id' => $sub_sub_cat_id->id,
-                    'categorizable_id' => $company_id,
+                    'categorizable_id' => $company_id->id,
                     'categorizable_type' => Sites::class,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
