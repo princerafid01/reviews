@@ -72,8 +72,9 @@
                                 </div><!-- /.col-xs-6 col-md-1 -->
                                 <div class="col-8 col-md-8 text-muted">
                                     <strong>{{ $r->reviewer }}</strong> {{ __('reviewed') }}<br>
-
+                                    @if($r->site->slug)
                                     <a href="{{ $r->site->slug }}">{{ $r->site->url }}</a>
+                                    @endif
                                 </div><!-- /.col-xs-6 col-md-11 -->
                             </div><!-- /.row -->
                             <br>
