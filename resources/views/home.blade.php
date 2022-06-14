@@ -84,9 +84,11 @@
                                 <span class="text-muted float-left">
                                     {{ $r->timeAgo }}
                                 </span>
+                                @if(isset($r->site->slug ))
                                 <a href="{{ $r->site->slug }}" class="btn btn-sm inline btn-success float-right">
                                     &raquo; {{ __('Read Review') }}
                                 </a>
+                                @endif
                             </p>
                             <!-- /.btn btn-xs btn-success -->
                         </div>
