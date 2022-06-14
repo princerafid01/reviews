@@ -801,10 +801,10 @@ class AdminController extends Controller
                 ]);
             }
 
-            $sub_sub_cat_id = DB::table('categories')->select('id')->whereSlug($sub_sub_category_slug)->first()->id;
+            $sub_sub_cat_id = DB::table('categories')->select('id')->whereSlug($sub_sub_category_slug)->first();
             if ($sub_sub_cat_id) {
                 $sub_sub_cat_ids = DB::table('categorizables')->insert([
-                    'category_id' => $sub_sub_cat_id,
+                    'category_id' => $sub_sub_cat_id->id,
                     'categorizable_id' => $company_id,
                     'categorizable_type' => Sites::class,
                     'created_at' => Carbon::now(),
