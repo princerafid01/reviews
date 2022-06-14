@@ -1,3 +1,4 @@
+
 @extends('admin.base')
 
 @section('section_title')
@@ -141,8 +142,12 @@
                                                         {{ $c->url }}<br>
                                                         <a href="http://{{ $c->url }}" target="_blank">View Site</a>
                                                         |
+                                                        @if ($c->url)
                                                         <a href="{{ route('reviewsForSite', ['site' => $c->url]) }}"
                                                             target="_blank">View Listing</a>
+                                                            
+                                                        @endif
+                                                        
                                                     </td>
                                                     <td>
                                                         Site Name: <strong>{{ $c->business_name }}</strong><br>
