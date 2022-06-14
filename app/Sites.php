@@ -103,7 +103,7 @@ class Sites extends Model
 
     }
 
-    public function category()
+    public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable');
     }

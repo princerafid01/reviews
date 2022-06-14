@@ -372,10 +372,15 @@ ul.list-categories li {
   display: block;
 }
 
-.cat-wrapper .owl-nav button span {
+.cat-wrapper .owl-nav button span , .top-review .owl-nav button span {
   font-size: 50px;
   font-weight: normal;
   background: white;
   padding: 0 15px;
   border: 1px solid #c5c5d6;
+}
+
+.top-review .owl-nav {
+  display: grid;
+  float: right!important;
 }

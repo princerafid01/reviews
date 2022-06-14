@@ -97,22 +97,76 @@
                 $skip += $take;
             @endphp
         @endfor
+    </div>
+
+    <div class="about bg-white" style="margin-top: 80px;padding: 100px 0 50px 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h1>Be Heard</h1>
+                            <p class="text-bold mb-5 mt-5">Trustpilot is a review platform that’s open to everyone. Share
+                                your experiences to help others make better choices and encourage companies to up their
+                                game.</p>
+
+                            <a href="#" style="border-color:black!important; text-decoration:none; border-radius: 40px;"
+                                class="btn-lg p-4 btn-light border "> What we do</a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6  p-5" style="background-color: #ffc107; margin-top: -13%;">
+                    <div class="col-md-8">
+                        <h1>Our 2022 Transparency Report has landed</h1>
+                        <p class="text-bold mb-5 mt-4">We’re looking back on a year unlike any other. Read about how we
+                            ensure our platform’s integrity.</p>
+                        <a href="#" style="text-decoration:none; border-radius: 40px;"
+                            class="btn-lg p-4 btn-dark text-white"> Take a look</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-review" style="padding: 70px 0 35px 0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6 class="text-center">Your stories</h6>
+                    <h1 class="text-center">Each review has a personal story</h1>
+                    <div class="top-review-inner owl-carousel owl-theme">
+                        <div class="item bg-white p-5">
+                            <i class="fa fa-star 3x"></i>
+                            <i class="fa fa-star 3x"></i>
+                            <i class="fa fa-star 3x"></i>
+                            <i class="fa fa-star 3x"></i>
+                            <i class="fa fa-star 3x"></i>
+                            <h1 style="font-size: 40px">“Fixed my broke fone. But I still can't get a date on Tinder.”</h1>
+                        </div>
+                        <div class="item bg-white">
+                            <h1>ONE</h1>
+                        </div>
+                        <div class="item bg-white">
+                            <h1>ONE</h1>
+                        </div>
+                        <div class="item bg-white">
+                            <h1>ONE</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
-        <!-- /.col-md-3 -->
-
-        <!-- /.container -->
-        {{-- @empty
-                <h1 class="text-center">
-                    <span class="badge badge-warning">
-                        {{ __('No reviews yet :(') }}
-                    </span>
-                    <!-- /.badge badge-warning -->
-                </h1>
-            @endforelse --}}
 
     </div>
+
+
     <!-- /.row -->
 @endsection
 
@@ -124,6 +178,24 @@
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script>
         $('.cat-wrapper').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            autoHeight: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 1
+                },
+                1000: {
+                    items: 1
+                }
+            }
+        });
+
+        $('.top-review-inner').owlCarousel({
             loop: true,
             margin: 10,
             nav: true,
@@ -155,11 +227,12 @@
             smartSpeed: 6000,
             center: true,
             autoplayHoverPause: true,
-            // stopOnHover:true
+            stopOnHover: true
         });
 
 
         $('.review-wrapper').trigger('play.owl.autoplay', [1000]);
+
         function setSpeed() {
             $('.review-wrapper').trigger('play.owl.autoplay', [6000]);
 
