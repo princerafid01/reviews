@@ -139,8 +139,10 @@
                                                         </td>
                                                         <td>
                                                             {{ @$r->site->url }}<br>
+                                                            @if( @$r->site->url)
                                                             <a href="{{ route('reviewsForSite', ['site' => @$r->site->url]) }}"
                                                                 target="_blank">View Listing</a>
+                                                                @endif
                                                         </td>
                                                         <td>
                                                             {{ $r->user->name ?? 'Admin' }}<br>
