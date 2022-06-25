@@ -384,3 +384,18 @@ ul.list-categories li {
   display: grid;
   float: right!important;
 }
+
+.top-review .owl-nav {
+  position: absolute;
+  top: 15%;
+  right: 0%;
+}
+
+.footer-design {
+  color: #fff;
+  background-color: #000032 !important;
+}
+
+.footer-design a {
+  color: #fff;
+}

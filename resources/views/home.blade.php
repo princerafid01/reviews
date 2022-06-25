@@ -72,8 +72,8 @@
                                 </div><!-- /.col-xs-6 col-md-1 -->
                                 <div class="col-8 col-md-8 text-muted">
                                     <strong>{{ $r->reviewer }}</strong> {{ __('reviewed') }}<br>
-                                    @if(isset($r->site->slug))
-                                    <a href="{{ $r->site->slug }}">{{ $r->site->url }}</a>
+                                    @if (isset($r->site->slug))
+                                        <a href="{{ $r->site->slug }}">{{ $r->site->url }}</a>
                                     @endif
                                 </div><!-- /.col-xs-6 col-md-11 -->
                             </div><!-- /.row -->
@@ -84,10 +84,10 @@
                                 <span class="text-muted float-left">
                                     {{ $r->timeAgo }}
                                 </span>
-                                @if(isset($r->site->slug ))
-                                <a href="{{ $r->site->slug }}" class="btn btn-sm inline btn-success float-right">
-                                    &raquo; {{ __('Read Review') }}
-                                </a>
+                                @if (isset($r->site->slug))
+                                    <a href="{{ $r->site->slug }}" class="btn btn-sm inline btn-success float-right">
+                                        &raquo; {{ __('Read Review') }}
+                                    </a>
                                 @endif
                             </p>
                             <!-- /.btn btn-xs btn-success -->
@@ -113,7 +113,8 @@
                                 your experiences to help others make better choices and encourage companies to up their
                                 game.</p>
 
-                            <a href="#" style="border-color:black!important; text-decoration:none; border-radius: 40px;"
+                            <a href="#"
+                                style="border-color:black!important; text-decoration:none; border-radius: 40px;"
                                 class="btn-lg p-4 btn-light border "> What we do</a>
 
                         </div>
@@ -141,25 +142,23 @@
                 <div class="col-md-12">
                     <h6 class="text-center">Your stories</h6>
                     <h1 class="text-center">Each review has a personal story</h1>
-                    <div class="top-review-inner owl-carousel owl-theme">
-                        <div class="item bg-white p-5">
-                            <i class="fa fa-star 3x"></i>
-                            <i class="fa fa-star 3x"></i>
-                            <i class="fa fa-star 3x"></i>
-                            <i class="fa fa-star 3x"></i>
-                            <i class="fa fa-star 3x"></i>
-                            <h1 style="font-size: 40px">“Fixed my broke fone. But I still can't get a date on Tinder.”</h1>
-                        </div>
-                        <div class="item bg-white">
-                            <h1>ONE</h1>
-                        </div>
-                        <div class="item bg-white">
-                            <h1>ONE</h1>
-                        </div>
-                        <div class="item bg-white">
-                            <h1>ONE</h1>
+                    <div class="row">
+                        <div class="col-md-12" style="margin: 0 auto">
+                            <div class="top-review-inner owl-carousel owl-theme">
+                            @foreach ($reviews->take(3) as $review)
+                                <div class="item bg-white p-5">
+                                    @for ($i = 0; $i < $review->rating; $i++)
+                                        <i class="fa fa-star 3x"></i>                                     
+                                    @endfor
+                                    <h1 style="font-size: 40px">“{{$review->review_content}}”</h1>
+                                    <small> {{$review->review_title}} </small>
+                                </div>
+                            @endforeach
+                                
+                            </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -168,6 +167,12 @@
 
 
     </div>
+
+    {{-- <footer>
+        <div class="container">
+
+        </div>
+    </footer> --}}
 
 
     <!-- /.row -->
