@@ -19,14 +19,19 @@ class ReviewsImport implements ToModel, WithHeadingRow, SkipsOnError
     */
     public function model(array $row)
     {
-        return new Reviews([
-            'review_item_id' => Sites::where('url' , $row['review_item_url'] )->first()->id, 
-            'rating' => $row['rating'], 
-            'review_title' => $row['review_title'], 
-            'review_content' => $row['review_content'], 
-            'publish' => 'Yes', 
-        ]);
-    }
+$site = Sites::where('url' , $row['review_item_url'] )->first();
+
+if($site){
+    return new Reviews([
+        'review_item_id' => $site->id, 
+        'rating' => $row['rating'], 
+        'review_title' => $row['review_title'], 
+        'review_content' => $row['review_content'], 
+        'publish' => 'Yes', 
+    ]);
+}
+        
+}
 
     public function onError(Throwable $e)
     {
