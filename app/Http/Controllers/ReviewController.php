@@ -18,7 +18,14 @@ class ReviewController extends Controller
     {
 
         if (request()->ajax()) {
-            $data = Reviews::with('site', 'user')
+            $data = Reviews::select(
+                'id',
+                'rating',
+                'review_title',
+                'review_content',
+                'created_at',
+                'review_item_id',
+            )->with('site', 'user')
                 ->whereHas('site', function ($query) {
                     $query->where('url', '!=', '');
                 })->wherePublish('yes')->orderByDesc('id')->get();
