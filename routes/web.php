@@ -104,6 +104,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'App\Http\Middleware\AdminMid
     
     Route::get('/', 'AdminController@dashboard');
 
+    // Datatable
+    Route::get( 'reviews-datatable', 'ReviewController@get_datatables' )->name('reviews.list');
+
+
 
     // Sub Sub Categories
     Route::post('/subcategories', 'SubCategoryController@create');

@@ -75,7 +75,7 @@
                                                         </td>
                                                         <td>
                                                             {{ $r->user->name ?? 'Admin' }}<br>
-                                                            {{ $r->user->email ?? 'admin@admin.com'}}
+                                                            {{ $r->user->email ?? 'admin@admin.com' }}
                                                         </td>
                                                         <td>
                                                             {!! str_repeat('<i class="fa fa-star"></i>', $r->rating) !!}
@@ -117,9 +117,10 @@
                                         </a>
                                     </h4>
                                 </div>
-                                <div id="collapseThree" class="panel-collapse collapse in" aria-expanded="true" style="">
+                                <div id="collapseThree" class="panel-collapse collapse in" aria-expanded="true"
+                                    style="">
                                     @if ($reviews)
-                                        <table class="table table-striped table-bordered table-responsive dataTable">
+                                        <table class="table table-striped table-bordered table-responsive review-datatable">
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
@@ -132,14 +133,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($reviews as $r)
+                                                {{-- @foreach ($reviews->take(100) as $r)
                                                     <tr>
                                                         <td>
                                                             {!! $r->id !!}
                                                         </td>
                                                         <td>
                                                             {{ @$r->site->url }}<br>
-                                                            @if( @$r->site->url)
+                                                            @if (@$r->site->url)
                                                             <a href="{{ route('reviewsForSite', ['site' => @$r->site->url]) }}"
                                                                 target="_blank">View Listing</a>
                                                                 @endif
@@ -169,7 +170,7 @@
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                @endforeach
+                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     @else
@@ -187,3 +188,45 @@
 
     @endsection
 
+    @section('admin_script')
+        <script type="text/javascript">
+            $(function() {
+
+                var table = $('.review-datatable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('reviews.list') }}",
+                    columns: [{
+                            data: 'id',
+                            name: 'id'
+                        },
+                        {
+                            data: 'site_url',
+                            name: 'site_url'
+                        },
+                        {
+                            data: 'reviewed_by',
+                            name: 'reviewed_by'
+                        },
+                        {
+                            data: 'review_title',
+                            name: 'review_title'
+                        },
+                        {
+                            data: 'review_content',
+                            name: 'review_content'
+                        },
+                        {
+                            data: 'created_at',
+                            name: 'created_at'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
+                });
+
+            });
+        </script>
+    @endsection

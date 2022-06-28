@@ -21,7 +21,9 @@
     <!-- iCheck -->
     <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/admin/plugins/iCheck/flat/blue.css') }}">
     <!-- dataTables -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/admin/plugins/datatables/dataTables.bootstrap.css') }}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/admin/plugins/datatables/dataTables.bootstrap.css') }}"> --}}
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <!-- colorPicker -->
     <link rel="stylesheet" type="text/css" href="{{ asset('resources/assets/admin/plugins/colorpicker/bootstrap-colorpicker.min.css') }}">
     <!-- select2 -->
@@ -183,8 +185,8 @@
     <!-- iCheck -->
     <script src="{{ asset('resources/assets/admin/plugins/iCheck/icheck.min.js') }}"></script>
     <!-- dataTables -->
-    <script src="{{ asset('resources/assets/admin/plugins/datatables/jQuery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('resources/assets/admin/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ asset('resources/assets/admin/plugins/datatables/jquery.dataTables.min.js') }}" defer></script>
+    <script src="{{ asset('resources/assets/admin/plugins/datatables/dataTables.bootstrap.min.js') }}" defer></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('resources/assets/admin/js/app.min.js') }}"></script>
     <!-- laravel.js -->
@@ -209,7 +211,7 @@
         radioClass: 'icheckbox_flat-blue',
         increaseArea: '20%' // optional
       });
-      $('.dataTable').dataTable();
+      $('.dataTable').DataTable();
       $('.my-colorpicker2').colorpicker();
 
       $( '.select2' ).select2();

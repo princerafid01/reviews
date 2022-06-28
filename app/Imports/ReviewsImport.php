@@ -13,25 +13,24 @@ use Throwable;
 class ReviewsImport implements ToModel, WithHeadingRow, SkipsOnError
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
-$site = Sites::where('url' , $row['review_item_url'] )->first();
+        $site = Sites::where('url', $row['review_item_url'])->first();
 
-if($site){
-    return new Reviews([
-        'review_item_id' => $site->id, 
-        'rating' => $row['rating'], 
-        'review_title' => $row['review_title'], 
-        'review_content' => $row['review_content'], 
-        'publish' => 'Yes', 
-    ]);
-}
-        
-}
+        if ($site) {
+            return new Reviews([
+                'review_item_id' => $site->id,
+                'rating' => $row['rating'],
+                'review_title' => $row['review_title'],
+                'review_content' => $row['review_content'],
+                'publish' => 'Yes',
+            ]);
+        }
+    }
 
     public function onError(Throwable $e)
     {
