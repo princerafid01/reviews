@@ -25,10 +25,11 @@ class ReviewController extends Controller
                 'review_content',
                 'created_at',
                 'review_item_id',
+                'user_id'
             )->with('site', 'user')
                 ->whereHas('site', function ($query) {
                     $query->where('url', '!=', '');
-                })->wherePublish('yes')->orderByDesc('id')->get();
+                })->wherePublish('yes')->orderByDesc('id');
 
             return Datatables::of($data)
                 ->addColumn('site_url', function (Reviews $review) {
@@ -58,7 +59,7 @@ class ReviewController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->escapeColumns('site_url', 'reviewed_by', 'action')
-                ->make(true);
+                ->toJson();
         }
     }
 
