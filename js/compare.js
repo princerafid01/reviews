@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // Initial setup
-    let product_main = [];
+    let product_main = getProductInLocalstorage('product_main') || [];
     const single_product_placeholder = `
     <div class="single-product-placholder d-inline-block">
         <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="180"
@@ -14,8 +14,10 @@ $(document).ready(function () {
     for (let i = 1; i <= 3; i++) {
         $('.product-placeholder').append(single_product_placeholder);
     }
+    generateProductFromLocalStorage(product_main);
     arrowDown();
 
+    // make Down the comparer Div
     function arrowDown(params) {
         $(".fa.fa-arrow-down").click(function () {
             $('.site-comparer').stop().animate({
@@ -27,7 +29,7 @@ $(document).ready(function () {
         });
     }
 
-
+    // make Up the comparer Div
     function arrowUp() {
         $(".fa.fa-arrow-up").click(function () {
             $('.site-comparer').stop().animate({
@@ -67,6 +69,7 @@ $(document).ready(function () {
                 site_url,
                 site_name
             });
+            setProductInLocalstorage('product_main', product_main);
             $('.site-comparer .product-main').append(html);
             generateFunctionForCompareProductClosing();
             handleDisablility();
@@ -78,6 +81,7 @@ $(document).ready(function () {
     // While removing product to the comparer 
     function removeMainProductComparer(site_url) {
         product_main = product_main.filter(elem => elem.site_url !== site_url);
+        setProductInLocalstorage('product_main', product_main);
         $(`.single-product-main[data-url="${site_url}"]`).remove();
         $(`.compare_checkbox[data-url="${site_url}"]`).prop("checked", false);
         handleDisablility();
@@ -108,7 +112,6 @@ $(document).ready(function () {
         $.each($('.product-placeholder .single-product-placholder'), function (index, element) {
             $(element).remove();
         });
-        console.log(product_main.length)
         $('.product-placeholder .single-product-placholder').remove();
         for (let i = 0; i < (3 - product_main.length); i++) {
             $('.product-placeholder').append(single_product_placeholder);
@@ -118,6 +121,7 @@ $(document).ready(function () {
     function removeAllProduct() {
         $('#removeAllProduct').click(function () {
             product_main = [];
+            setProductInLocalstorage('product_main', product_main);
             $.each($('.product-main  .single-product-main'), function (index, element) {
                 $(element).remove();
             });
@@ -129,6 +133,35 @@ $(document).ready(function () {
             handleDisablility();
             placeholderHandler();
         });
+    }
+
+    function setProductInLocalstorage(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function getProductInLocalstorage(key, value) {
+        return JSON.parse(localStorage.getItem(key));
+    }
+
+    function generateProductFromLocalStorage(products) {
+        if (products.length > 0) {
+            let htmlProducts = '';
+            products.map(function (product) {
+                $(`.compare_checkbox[data-url="${product.site_url}"]`).prop("checked", true);
+
+                htmlProducts += `<div class="single-product-main d-inline-block bg-white" data-url="${product.site_url}">
+                <i class="fa fa-times mt-2"></i>
+                ${product.site_name}
+            </div>`;
+            });
+            $('.site-comparer .product-main').append(htmlProducts);
+            generateFunctionForCompareProductClosing();
+            handleDisablility();
+            placeholderHandler();
+
+
+        }
+
     }
 
 });
