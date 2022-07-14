@@ -21,6 +21,20 @@
                             <a href="{{ route('browse-category', ['slug' => $c->slug]) }}">
                                 {{ $c->name }}
                             </a><br>
+
+                            @foreach ($c->children as $sub_cat)
+                                <a href="{{ route('browse-category', ['slug' => $sub_cat->slug]) }}" style="margin-left: 20px">
+                                    - {{ $sub_cat->name }}
+                                </a><br>
+
+                                @foreach ($sub_cat->children as $sub_sub_cat)
+                                
+                                    <a href="{{ route('browse-category', ['slug' => $sub_sub_cat->slug]) }}" style="margin-left: 40px">
+                                        - {{ $sub_sub_cat->name }}
+                                    </a><br>
+                                    
+                                @endforeach
+                            @endforeach
                         @endforeach
                         <br>
 
