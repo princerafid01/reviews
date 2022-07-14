@@ -1,6 +1,9 @@
 $(document).ready(function () {
     // Initial setup
     let product_main = getProductInLocalstorage('product_main') || [];
+    if(product_main.length === 0){
+        $('.site-comparer').hide();
+    }
     const single_product_placeholder = `
     <div class="single-product-placholder d-inline-block">
         <svg class="bd-placeholder-img card-img-top mt-3" width="100%" height="180"
@@ -45,6 +48,8 @@ $(document).ready(function () {
 
     // Handle Checkbox
     $(".compare_checkbox").change(function () {
+        $('.site-comparer').show();
+
         const site_url = $(this).data('url');
         const site_name = $(this).data('name');
 
