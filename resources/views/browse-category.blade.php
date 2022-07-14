@@ -18,6 +18,7 @@
                         <br>
 
                         @foreach ($all_categories as $c)
+                            @empty($c->parent_id)
                             <a href="{{ route('browse-category', ['slug' => $c->slug]) }}">
                                 {{ $c->name }}
                             </a><br>
@@ -35,6 +36,7 @@
                                     
                                 @endforeach
                             @endforeach
+                            @endempty
                         @endforeach
                         <br>
 
