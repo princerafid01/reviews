@@ -54,7 +54,7 @@ class ReviewController extends Controller
                 ->addColumn('action', function (Reviews $review) {
                     $render = '<a href="/admin/reviews/edit/' . $review->id . '">Edit</a>
                     <br>
-                    <a href="/admin/reviews/delete/{{ $r->id }}" onclick="return confirm(\'Are you sure?\')">Delete </a>';
+                    <a href="/admin/reviews/delete/' .  $review->id . '" onclick="return confirm(\'Are you sure?\')">Delete </a>';
                     return $render;
                 })
                 ->rawColumns(['action'])
