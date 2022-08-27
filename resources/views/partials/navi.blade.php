@@ -1,15 +1,16 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 <a class="navbar-brand" href="{{ route('home') }}">
 
-    @if($logo = Options::get_option( 'site.logo' )) 
-      <img src="/public/{{ $logo }}" height="30" alt="site logo"/> 
-    @else 
+    {{-- @if($logo = Options::get_option( 'site.logo' ))  --}}
+      {{-- <img src="/public/{{ $logo }}" height="30" alt="site logo"/>  --}}
+      <img src="/public/logo.png" height="30" alt="site logo"/> 
+    {{-- @else 
       <i class="far fa-star"></i>
-    @endif 
+    @endif  --}}
 
   @if( Options::get_option( 'enableSiteTitle', 'Yes') == 'Yes'  )
-    {{ Options::get_option( 'site_title', 'PHP Trusted Reviews' ) }}
-  @endif
+    {{ Options::get_option( 'site_title', 'PHP Trusted Reviews' ) }} 
+  @endif 
 
 </a>
 
