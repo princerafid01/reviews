@@ -26,7 +26,7 @@
                 <div class="row item">
                     @foreach ($categories->take(9) as $category)
                         <div class="col-md-4 singleCat margin-bottom-25">
-                            <a href="#" class="card"> <i
+                            <a href="{{ url("/browse-category/$category->slug")}}" class="card"> <i
                                     class="fa fa-{{ $category->icon }}"></i>{{ $category->name }}</a>
                         </div>
                     @endforeach

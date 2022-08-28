@@ -2,6 +2,7 @@
 <style>
 .homepage-header {
     margin-top: -10px;
+    height: 550px!important;
     background-image: url('/public/{{ Options::get_option( 'homepage_header_image' ) }}');
 }
 </style>
