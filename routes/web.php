@@ -47,6 +47,8 @@ Route::group(['middleware' => 'App\Http\Middleware\LMiddleware'], function () {
         ->name('companyClaim')
         ->middleware('auth');
 
+    Route::get('compare-table', 'CompareController@index')->name('compareTable');
+
     Route::post('verify-ownership-form/{site}', 'CompaniesController@verifyOwnershipForm')
         ->name('verifyOwnershipForm')
         ->middleware('auth');

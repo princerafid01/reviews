@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success">
 <a class="navbar-brand" href="{{ route('home') }}">
 
     {{-- @if($logo = Options::get_option( 'site.logo' ))  --}}
