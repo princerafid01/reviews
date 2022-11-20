@@ -31,8 +31,8 @@ class HomeController extends Controller
             ->take(12)
             ->get();
 
-        // $categories = AppCategory::root()->get();
-        $categories = AppCategory::all();
+        $categories = AppCategory::root()->get();
+        // $categories = AppCategory::all();
 
         return view('home', ['activeNav' => 'home', 'reviews' => $reviews , 'categories' => $categories]);
     }

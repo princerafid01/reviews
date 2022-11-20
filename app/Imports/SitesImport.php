@@ -22,6 +22,16 @@ class SitesImport implements ToModel, WithHeadingRow, SkipsOnError
     public function model(array $row)
     {
         $url = str_replace(['http://', 'https://', '/'], '', $row['url']);
+        $data = $row;
+
+        unset($data['url']);
+        unset($data['business_name']);
+        unset($data['latitude']);
+        unset($data['longitude']);
+        unset($data['location']);
+        unset($data['category']);
+        unset($data['sub_category']);
+        unset($data['sub_sub_category']);
 
         $data = new Sites([
             'url' => $url,
@@ -30,7 +40,10 @@ class SitesImport implements ToModel, WithHeadingRow, SkipsOnError
             'lati' => $row['latitude'],
             'longi' => $row['longitude'],
             'location' => $row['location'],
-            'publish' => 'Yes'
+            'publish' => 'Yes',
+            'metadata' => [
+                'compare_attributes' => $data
+            ]
         ]);
 
         return $data;

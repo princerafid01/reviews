@@ -153,7 +153,7 @@
                                                         Site Name: <strong>{{ $c->business_name }}</strong><br>
                                                         Category: <strong>{{ @$c->categories->first()->name }} </strong><br>
                                                         Sub Category: <strong>{{ @$c->categories->get(1)->name }}</strong><br>
-                                                        Sub Sub Cateogries: <strong>{{ @$c->categories->slice(2, 1)->values()->pluck('name')->implode(',') }}</strong>
+                                                        Sub Sub Categories: <strong>{{ @$c->categories->slice(2, 1)->values()->pluck('name')->implode(',') }}</strong>
                                                     </td>
                                                     <td>
                                                         @if ($c->claimer()->exists())

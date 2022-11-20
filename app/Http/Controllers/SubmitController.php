@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use App\Sites;
 use App\Mail\EmailNotification;
 use App\User;
-
 use Mail;
 use Options;
 
@@ -25,8 +24,10 @@ class SubmitController extends Controller
         
         $categories = app('rinvex.categories.category')->all();
         $seo_title = __( 'Submit Company' ) . ' - ' . env( 'APP_NAME' );
+        $comparer_options = Options::get_option('site_comparer_attributes');
+        
 
-        return view('submit-company', compact( 'categories', 'seo_title' ));
+        return view('submit-company', compact( 'categories', 'seo_title','comparer_options' ));
 
     }
 

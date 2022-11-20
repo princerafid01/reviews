@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Sites;
 use Illuminate\Http\Request;
 
 class CompareController extends Controller
 {
     public function index()
     {
-        return view('compare-table');
+        $sites = Sites::orderBy('id' , 'desc')->take(3)->get();
+        return view('compare-table' , compact('sites' , $sites));
     }
 }

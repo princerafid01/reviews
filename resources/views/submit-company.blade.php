@@ -4,7 +4,7 @@
 
 	<div class="container">
 		<div class="row">
-		<div class="col-md-8 col-xs-12">
+		<div class="col-md-12 col-xs-12">
 		<div class="card">
 			<h2>{{ __('Submit Company') }}</h2>
 			{{ __( "Didn't find the company you're looking for?" )}}	
@@ -32,6 +32,12 @@
 			<input type="text" name="city_region" id="city_region" placeholder="{{ __('Company Location') }}"  required="required" autocomplete="off" class="form-control" value="{{ old('city_region') }}">
 				
 			</select>
+
+      @foreach (explode(",",$comparer_options) as $option)
+          <label>{{ ucwords($option) }}</label>
+          <input type="text" name="name" value="{{ old('name') }}" placeholder="" class="form-control" required="required">
+        
+      @endforeach
 
 			<input type="hidden" name="lati" id="lati" value="{{ old('lati') }}">
 			<input type="hidden" name="longi" id="longi" value="{{ old('longi') }}">

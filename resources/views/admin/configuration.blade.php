@@ -60,6 +60,58 @@
 	{!! csrf_field() !!}
 	<div class="col-xs-12 col-md-6">
 		<div class="box">
+			<div class="box-header with-border"><strong>Site Comparer Attributes</strong></div>
+			<div class="box-body">
+			<dl>
+			<dt>Attributes(with Commas)</dt>
+			<dd><input type="text" name="site_comparer_attributes" value="{{ Options::get_option('site_comparer_attributes') }}" class="form-control"></dd>
+			</dl>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 col-md-6">
+		<div class="box">
+			<div class="box-header with-border"><strong>PayPal Configuration</strong></div>
+			<div class="box-body">
+			<dl>
+			<dt>Paypal Email Address</dt>
+			<dd><input type="text" name="paypal_email" value="{{ Options::get_option('paypal_email') }}" class="form-control"></dd>
+			</dl>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-6">
+		<div class="box">
+			<div class="box-header with-border"><strong>Stripe API Configuration</strong></div>
+			<div class="box-body">
+			<dl>
+			<dt>STRIPE_PUBLISHABLE_KEY</dt>
+			<dd><input type="text" name="STRIPE_PUBLISHABLE_KEY" value="{{ Options::get_option('STRIPE_PUBLISHABLE_KEY') }}" class="form-control"></dd>
+			<dt>STRIPE_SECRET_KEY</dt>
+			<dd><input type="text" name="STRIPE_SECRET_KEY" value="{{ Options::get_option('STRIPE_SECRET_KEY') }}" class="form-control"></dd>
+			</dl>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-12">
+		<div class="box">
+			<div class="box-header with-border"><strong>Google Maps (Places API KEY)</strong></div>
+			<div class="box-body">
+			<dl>
+			<dt>GMAPS Places API KEY</dt>
+			<dd><input type="text" name="mapsApiKey" value="{{ Options::get_option('mapsApiKey') }}" class="form-control"></dd>
+			</dl>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="row">
+	{!! csrf_field() !!}
+	<div class="col-xs-12 col-md-6">
+		<div class="box">
 			<div class="box-header with-border"><strong>PayPal Configuration</strong></div>
 			<div class="box-body">
 			<dl>
