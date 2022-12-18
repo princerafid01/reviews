@@ -22,11 +22,28 @@
 
 			<br>
 			<label>{{ __('Category') }}</label>
-			<select class="form-control" name="category_id">
-			@foreach( $categories as $c )
+
+			<select class="form-control" name="category_id" id="category_id">
+				{{-- <option value="" @if(old('category_id') == $c->id) selected @endif>@if(old('category_id') == $c->id) {{$c->name}} @endif</option> --}}
+				<option value="" selected>Select Category</option>
+
+			{{-- @foreach( $categories as $c )
 				<option value="{{ $c->id }}" @if(old('category_id') == $c->id) selected @endif>{{ $c->name }}</option>
-			@endforeach
+			@endforeach --}}
 			</select>
+			<br>
+
+
+      <select class="form-control" name="sub_category_id" id="sub_category_id">
+        <option value="" selected>Select Sub Category</option>
+			</select>
+			<br>
+
+      <select class="form-control" name="sub_sub_category_id" id="sub_sub_category_id">
+        <option value="" selected>Select Sub Sub Category</option>
+			</select>
+
+      
 			<br>
 			<label>{{ __('Location') }}</label>
 			<input type="text" name="city_region" id="city_region" placeholder="{{ __('Company Location') }}"  required="required" autocomplete="off" class="form-control" value="{{ old('city_region') }}">
@@ -141,10 +158,41 @@
         });
       }
     }
+
+    function dropdownLocationInitialize() {
+      let dataCategories = @json($json_encoded_categories);
+      dataCategories = JSON.parse(dataCategories);
+
+      var subjectSel = document.getElementById("category_id");
+      var topicSel = document.getElementById("sub_category_id");
+      var chapterSel = document.getElementById("sub_sub_category_id");
+      for (var x in dataCategories) {
+        subjectSel.options[subjectSel.options.length] = new Option(x, x);
+      }
+      subjectSel.onchange = function() {
+       //empty Chapters- and Topics- dropdowns
+        chapterSel.length = 1;
+        topicSel.length = 1;
+        //display correct values
+        for (var y in dataCategories[this.value]) {
+          topicSel.options[topicSel.options.length] = new Option(y, y);
+        }
+      }
+      topicSel.onchange = function() {
+       //empty Chapters dropdown
+        chapterSel.length = 1;
+        //display correct values
+        var z = dataCategories[subjectSel.value][this.value];
+        for (var i = 0; i < z.length; i++) {
+          chapterSel.options[chapterSel.options.length] = new Option(z[i], z[i]);
+        }
+      }
+    }
     // [END region_geolocation]
 
     $( document ).ready( function() {
     	initialize();
+      dropdownLocationInitialize();
     });
     </script>
 

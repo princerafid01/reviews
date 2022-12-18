@@ -25,9 +25,22 @@ class SubmitController extends Controller
         $categories = app('rinvex.categories.category')->all();
         $seo_title = __( 'Submit Company' ) . ' - ' . env( 'APP_NAME' );
         $comparer_options = Options::get_option('site_comparer_attributes');
-        
+        $data = [];
 
-        return view('submit-company', compact( 'categories', 'seo_title','comparer_options' ));
+        foreach ($categories as $c){
+            $data[trim($c->name)] = [];  
+            foreach ($c->children as $sub_cat){
+                $data[trim($c->name)][trim($sub_cat->name)] = [];
+                foreach ($sub_cat->children as $sub_sub_cat){
+                    $data[trim($c->name)][trim($sub_cat->name)][] = trim($sub_sub_cat->name);
+                }
+            }
+        }
+
+        $json_encoded_categories = json_encode($data);
+
+        
+        return view('submit-company', compact( 'categories', 'seo_title','comparer_options', 'json_encoded_categories' ));
 
     }
 
