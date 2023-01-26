@@ -29,7 +29,7 @@
                     @foreach( $categories->take(12) as $category )
                         <div class="col-md-6 col-lg-4 margin-bottom-25">
                             <div class="card">
-                                <a href="{{ url("/browse-category/$category->slug]") }}">
+                                <a href="{{ url("/browse-category/$category->slug") }}">
                                     <i class="fa fa-laptop cat-icon"></i>{{ $category->name }}
                                 </a>
                             </div>
