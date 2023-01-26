@@ -1,10 +1,7 @@
-<footer class="container-fluid footer-design">
+<footer class="container-fluid footer-section">
     <hr>
     <div class="row">
-        <div class="col">
-            <h5><i class="far fa-star"></i> {{ Options::get_option('site_title', 'PHP Trusted Reviews') }}</h5>
-        </div><!-- /.pull-left -->
-        <div class="col text-right">
+        <div class="footer-content col text-right">
             @foreach (App\Page::all() as $page)
                 <a href="/p-{{ $page->page_slug }}">{{ $page->page_title }}</a> |
             @endforeach
