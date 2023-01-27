@@ -319,7 +319,12 @@ a:hover{
   padding: 10px 15px;
   border-radius: 8px;
 }
-
+.bg-rating label {
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #3b654e;
+}
 .res-latest-review.card {
   padding: 32px 25px 25px 25px;
 }
@@ -802,7 +807,7 @@ input[name="companyStatus"], [name="reviewsCount"],  [name="sortBy"]{
 
 /* custom navigation color */
 .bordered-rounded {
-  border: 1px solid rgba(0,0,0,.125);
+    border: 1px solid rgba(0,0,0,.125);
 }
 .text-mov {
   color: #000032;
@@ -811,10 +816,10 @@ input[name="companyStatus"], [name="reviewsCount"],  [name="sortBy"]{
   font-weight: bold;
 }
 .inline {
-  display: inline;
+    display: inline;
 }
 .inner-site-header {
-  margin-top: -24px;
+    margin-top: -24px;
 }
 .navbar {
   padding: 15px 50px;
@@ -831,39 +836,39 @@ input[name="companyStatus"], [name="reviewsCount"],  [name="sortBy"]{
   margin-left: 18px;
 }
 .navbar-dark .navbar-nav .nav-link {
-  color: #f1f1f1 !important;
+    color: #f1f1f1 !important;
 }
 .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
-  color: #CCCCCC !important;
+    color: #CCCCCC !important;
 }
 .nav-item-bordered {
-  border: 1px solid #f1f1f1;
+    border: 1px solid #f1f1f1;
 }
 .active-side {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 .no-padding {
-  padding: 0 !important;
+	padding: 0 !important;
 }
 .card {
-  border: none;
-  -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 7%), 0 1px 2px -1px rgb(0 0 0 / 7%);
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 7%), 0 1px 2px -1px rgb(0 0 0 / 7%);
-  padding: 30px;
+    border: none;
+    -webkit-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 7%), 0 1px 2px -1px rgb(0 0 0 / 7%);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 7%), 0 1px 2px -1px rgb(0 0 0 / 7%);
+    padding: 30px;
 }
 .user-thumb {
-  width: 50px;
-  height: 50px;
+	width: 50px;
+	height: 50px;
 }
 .username {
-  display:block;
-  font-size: 16px;
+	display:block;
+	font-size: 16px;
 }
 .table td {
-  color: #6c757d;
+	color: #6c757d;
 }
 .margin-bottom-25 {
-  margin-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 .inner-search {
@@ -900,25 +905,25 @@ input[name="companyStatus"], [name="reviewsCount"],  [name="sortBy"]{
   flex-wrap: wrap;
 }
 .height-350 {
-  height: 350px;
+	height: 350px;
 }
 .white {
-  color: white;
+	color: white;
 }
 .text-right {
-  text-align: right;
+	text-align: right;
 }
 .promote-tr {
-  background: rgba(0,0,0,.075);
+	background: rgba(0,0,0,.075);
 }
 .promote-tr td {
-  color: #cc0000;
+	color: #cc0000;
 }
 .promote-profile {
-  color: #cc0000;
+	color: #cc0000;
 }
 section.pricing {
-
+  
 }
 
 .pricing .card {
@@ -1029,7 +1034,7 @@ input[name="star"] {
   color: #B0BEC5;
   transition: color 0.2s ease-in-out;
 }
-/* set direction to row-reverse so 5th star is at the end and ~
+/* set direction to row-reverse so 5th star is at the end and ~ 
   can be used to fill all sibling stars that precede last starred element
   */
 .star-container {
@@ -1093,6 +1098,7 @@ ul.list-categories li {
   padding-right: 50px;
   padding-left: 50px;
   padding-bottom: 20px;
+  position: relative;
 }
 .footer_section a{
   color: #ffffff;
@@ -1126,11 +1132,11 @@ ul.list-categories li {
   }
 }
 
-@media only screen and (min-width: 992px) and (max-width: 1350px){
-  .design-shape-2 img {
-    left: 5%;
+  @media only screen and (min-width: 992px) and (max-width: 1350px){
+    .design-shape-2 img {
+      left: 5%;
+    }
   }
-}
 
 @media only screen and (min-width: 1500px) and (max-width: 1600px), only screen and (min-width: 1100px) and (max-width: 1200px), only screen and (min-width: 640px) and (max-width: 767px){
   .custom-container {
@@ -1334,8 +1340,8 @@ ul.list-categories li {
     text-align: center!important;
   }
   .footer_section {
-    padding-right: 10px;
-    padding-left: 10px;
+     padding-right: 10px;
+     padding-left: 10px;
   }
   .company-link {
     margin-top: 45px;
@@ -1433,14 +1439,14 @@ ul.list-categories li {
     margin-left: 0;
     margin-top: 45px;
   }
-  .review-single-bg {
-    overflow: hidden;
-  }
-  .company-img .rating-number {
-    right: 13%;
-    bottom: -6%;
-    top: auto;
-  }
+.review-single-bg {
+  overflow: hidden;
+}
+.company-img .rating-number {
+  right: 13%;
+  bottom: -6%;
+  top: auto;
+}
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
