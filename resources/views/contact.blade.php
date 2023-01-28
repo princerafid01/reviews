@@ -1,6 +1,6 @@
 @extends('base') 
 @section('content')
-<div class="container-fluid container-white">
+<div class="container-fluid container-white ptb">
 	<div class="container add-paddings">
 		<div class="col-md-8 col-xs-12 mx-auto">
 			<div class="row card">

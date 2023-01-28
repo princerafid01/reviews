@@ -2,7 +2,7 @@
 
 @section( 'content' )
 
-<div class="container">
+<div class="container ptb">
 <div class="row">
 <div class="col-10 mx-auto">
 <ul class="nav nav-tabs">

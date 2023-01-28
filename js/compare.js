@@ -10,7 +10,7 @@ $(document).ready(function () {
         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder"
         preserveAspectRatio="xMidYMid slice" focusable="false">
             <title>Placeholder</title>
-            <rect width="80px" height="100px" fill="#868e96"></rect>
+            <rect width="80px" height="100px" fill="#2d3d3d"></rect>
         </svg>
     </div>
     `;
@@ -24,7 +24,7 @@ $(document).ready(function () {
     function arrowDown(params) {
         $(".fa.fa-arrow-down").click(function () {
             $('.site-comparer').stop().animate({
-                'bottom': '-122px'
+                'bottom': '-130px'
             }, 500);
             $(this).removeClass('fa-arrow-down');
             $(this).addClass('fa-arrow-up');
@@ -66,7 +66,7 @@ $(document).ready(function () {
         if (product_main.length >= 4) {
             alert('Only Three Product can be compared')
         } else {
-            const html = `<div class="single-product-main d-inline-block bg-white" data-url="${site_url}">
+            const html = `<div class="single-product-main d-inline-block" data-url="${site_url}">
                 <i class="fa fa-times mt-1"></i>
                 ${site_name}
             </div>`;
@@ -154,7 +154,7 @@ $(document).ready(function () {
             products.map(function (product) {
                 $(`.compare_checkbox[data-url="${product.site_url}"]`).prop("checked", true);
 
-                htmlProducts += `<div class="single-product-main d-inline-block bg-white" data-url="${product.site_url}">
+                htmlProducts += `<div class="single-product-main d-inline-block" data-url="${product.site_url}">
                 <i class="fa fa-times mt-2"></i>
                 ${product.site_name}
             </div>`;

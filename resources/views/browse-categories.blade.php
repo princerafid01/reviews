@@ -1,31 +1,31 @@
 @extends( 'base' )
 
 @section( 'content' )
-
-	<div class="container">
-		<div class="row">
-
-		<div class="col-xs-12">
-		 	{!! Options::get_option( 'catAd' ) !!}
-		 	<hr>
-		 </div>
-
-		<div class="col-md-12 col-xs-12">
-			<div class="card">
-				<h5>{{ __( 'Categories' )}}</h5>
-				<ul class="list-categories">
-				@foreach( $categories as $c )
-					<li>
-						<a href="{{ route('browse-category', ['slug' => $c->slug]) }}">
-							{{ $c->name }} ({{ $c->entries( \App\Sites::class )->wherePublish('yes')->count() }})
-						</a>
-					</li>
-				@endforeach
-				</ul>
+	<div class="explore_categories">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-xs-12">
+					<h2 class="section__title">
+						{{__('All Categories')}}
+					</h2>
+				</div>
 			</div>
-		</div><!-- /.col-md-4 col-xs-12 -->
-		
+			<div class="row header-mt">
+				<div class="col-xs-12">
+					{!! Options::get_option( 'catAd' ) !!}
+					<hr>
+				</div>
+				@foreach( $categories as $c )
+					<div class="col-md-4 margin-bottom-25">
+						<div class="card">
+							<a href="{{ route('browse-category', ['slug' => $c->slug]) }}">
+								<i class="fa fa-laptop cat-icon"></i>{{ $c->name }}
+							</a>
+						</div>
+					</div>
+				@endforeach
+			</div>
 		</div>
-	</div><!-- /.container card -->
-   
+	</div>
+
 @endsection
