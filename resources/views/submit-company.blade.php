@@ -2,9 +2,9 @@
 
 @section( 'content' )
 
-	<div class="container">
-		<div class="row">
-		<div class="col-md-12 col-xs-12">
+    <div class="container ptb">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-xs-12">
 		<div class="card">
 			<h2>{{ __('Submit Company') }}</h2>
 			{{ __( "Didn't find the company you're looking for?" )}}	

@@ -1,9 +1,9 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-success">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
 <a class="navbar-brand" href="{{ route('home') }}">
 
     {{-- @if($logo = Options::get_option( 'site.logo' ))  --}}
       {{-- <img src="/public/{{ $logo }}" height="30" alt="site logo"/>  --}}
-      <img src="/public/logo.png" height="30" alt="site logo"/> 
+      <img src="/public/logo.svg" height="50" alt="site logo"/>
     {{-- @else 
       <i class="far fa-star"></i>
     @endif  --}}
@@ -31,17 +31,17 @@
   </li>
   @if( auth()->guest() )
   <li class="nav-item">
-    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+    <a class="nav-link main-btn" href="{{ route('login') }}">{{ __('Login') }}</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{{ route('register') }}">{{ __('Signup') }}</a>
+    <a class="nav-link main-btn btn-border" href="{{ route('register') }}">{{ __('Signup') }}</a>
   </li>
   @else
   <li class="nav-item">
-    <a class="nav-link @if(isset($activeNav) && ($activeNav == 'account')) active @endif" href="{{ route('myaccount') }}">{{ __('My Account') }}</a>
+    <a class="nav-link main-btn @if(isset($activeNav) && ($activeNav == 'account')) active @endif" href="{{ route('myaccount') }}">{{ __('My Account') }}</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
+    <a class="nav-link main-btn btn-border" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
   </li>
   @endif
