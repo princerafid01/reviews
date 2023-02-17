@@ -23,7 +23,7 @@
 			<br>
 			<label>{{ __('Category') }}</label>
 
-			<select class="form-control" name="category_id" id="category_id">
+			<select class="form-control" name="category_name" id="category_id" required="required">
 				{{-- <option value="" @if(old('category_id') == $c->id) selected @endif>@if(old('category_id') == $c->id) {{$c->name}} @endif</option> --}}
 				<option value="" selected>Select Category</option>
 
@@ -34,12 +34,12 @@
 			<br>
 
 
-      <select class="form-control" name="sub_category_id" id="sub_category_id">
+      <select class="form-control" name="sub_category_name" id="sub_category_id" required="required">
         <option value="" selected>Select Sub Category</option>
 			</select>
 			<br>
 
-      <select class="form-control" name="sub_sub_category_id" id="sub_sub_category_id">
+      <select class="form-control" name="sub_sub_category_name" id="sub_sub_category_id" required="required">
         <option value="" selected>Select Sub Sub Category</option>
 			</select>
 
@@ -52,7 +52,7 @@
 
       @foreach (explode(",",$comparer_options) as $option)
           <label>{{ ucwords($option) }}</label>
-          <input type="text" name="name" value="{{ old('name') }}" placeholder="" class="form-control" required="required">
+          <input type="text" name="option_name" value="{{ old('option_name') }}" placeholder="" class="form-control" required="required">
         
       @endforeach
 
@@ -161,13 +161,17 @@
 
     function dropdownLocationInitialize() {
       let dataCategories = @json($json_encoded_categories);
+      let categories = @json($categories);
       dataCategories = JSON.parse(dataCategories);
+      console.log(categories);
+
 
       var subjectSel = document.getElementById("category_id");
       var topicSel = document.getElementById("sub_category_id");
       var chapterSel = document.getElementById("sub_sub_category_id");
       for (var x in dataCategories) {
-        subjectSel.options[subjectSel.options.length] = new Option(x, x);
+        // const slug = categories.find(t => t.name === x)?.slug
+        subjectSel.options[subjectSel.options.length] = new Option(x,x);
       }
       subjectSel.onchange = function() {
        //empty Chapters- and Topics- dropdowns

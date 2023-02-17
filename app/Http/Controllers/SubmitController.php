@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Sites;
 use App\Mail\EmailNotification;
 use App\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Mail;
 use Options;
 
@@ -76,8 +78,16 @@ class SubmitController extends Controller
         $site->submittedBy = auth()->user()->id;
         $site->save();
 
+        $category = app('rinvex.categories.category')->where('name->en', $r->category_name)->first();
+        $sub_category = app('rinvex.categories.category')->where('name->en', $r->sub_category_name)->first();
+        $sub_sub_category = app('rinvex.categories.category')->where('name->en', $r->sub_sub_category_name)->first();
+
         // attach category to this site
-        $this->__updateCategory( $site, $r->category_id );
+        // $this->__updateCategory( $site, $category->id );
+
+        $this->__updateCategoryAndSubcategory($category->slug, $site->id );
+        $this->__updateCategoryAndSubcategory($sub_category->slug, $site->id );
+        $this->__updateCategoryAndSubcategory($sub_sub_category->slug, $site->id );
 
         // notify admin by email
         $data[ 'message' ] = sprintf(__('New business added on the website called %s
@@ -106,6 +116,21 @@ class SubmitController extends Controller
     // set category
     private function __updateCategory( Sites $p, int $categoryId ): object {
         return $p->syncCategories( $categoryId, true);
+    }
+
+    private function __updateCategoryAndSubcategory($slug, $site_id)
+    {
+        $cat_id = DB::table('categories')->select('id')->whereSlug($slug)->first();
+        if ($cat_id) {
+            $sub_cat_ids = DB::table('categorizables')->insert([
+                'category_id' => $cat_id->id,
+                'categorizable_id' => $site_id,
+                'categorizable_type' => Sites::class,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+
     }
 
 }
