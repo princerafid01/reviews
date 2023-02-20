@@ -1,4 +1,4 @@
-<footer class="container-fluid footer-section">
+<footer class="container-fluid footer_section">
     <hr>
     <div class="row">
         <div class="footer-content col text-right">
