@@ -10,7 +10,7 @@ class CompareController extends Controller
 {
     public function index(Request $request)
     {
-        $selected_products = Arr::pluck(json_decode($request->productsString), 'url');
+        $selected_products = Arr::pluck(json_decode($request->productsString), 'site_url');
         $sites = Sites::whereIn('url', $selected_products)->orderBy('id' , 'desc')->get();
         return view('compare-table' , compact('sites' , $sites));
     }
