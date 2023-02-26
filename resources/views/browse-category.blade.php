@@ -197,7 +197,7 @@
 
                 </div>
                 <div class="col-md-6 mt-2">
-                    <a href="#" class="btn main-btn compare-btn float-right">Compare Now</a><br />
+                    <a href="#" class="btn main-btn compare-btn float-right"  id="compare-btn">Compare Now</a><br />
                     <button class="btn main-btn btn-border mt-2 remove-btn  float-right " id="removeAllProduct">Remove
                         All</button>
                 </div>
@@ -302,6 +302,34 @@
         });
     </script>
     <script src="{{ asset('js/compare.js') }}"></script>
+    <script>
+        // console.log(route('compareTable', JSON.parse()));
+        $("#compare-btn").click(function(event){
+            event.preventDefault();
+            const productsString = localStorage.getItem('product_main');
+
+            window.location.href = '/compare-table?productsString='+ productsString ;
+
+            // $.ajax({
+            //     type: 'get',
+            //     url: '/compare-table',
+            //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //     data: {products},
+            //     traditional: true
+            // });
+
+            // $.ajax({
+            //     method: 'GET',
+            //     url: '/compare-table',
+            //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            //     data: {products}, 
+            //     // success: function(response){ 
+                
+            //     // },
+            //     // error: function(jqXHR, textStatus, errorThrown) { }
+            // });
+        });
+    </script>
 @endsection
 
 @section('extraCSS')

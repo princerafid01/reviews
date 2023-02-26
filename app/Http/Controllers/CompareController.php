@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Sites;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class CompareController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sites = Sites::orderBy('id' , 'desc')->take(3)->get();
+        $selected_products = Arr::pluck(json_decode($request->productsString), 'url');
+        $sites = Sites::whereIn('url', $selected_products)->orderBy('id' , 'desc')->get();
         return view('compare-table' , compact('sites' , $sites));
     }
 }
