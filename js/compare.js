@@ -1,6 +1,8 @@
 $(document).ready(function () {
     // Initial setup
     let product_main = getProductInLocalstorage('product_main') || [];
+    removeAllProduct();
+
     if(product_main.length === 0){
         $('.site-comparer').hide();
     }
@@ -125,6 +127,7 @@ $(document).ready(function () {
 
     function removeAllProduct() {
         $('#removeAllProduct').click(function () {
+            console.log("Remove All");
             product_main = [];
             setProductInLocalstorage('product_main', product_main);
             $.each($('.product-main  .single-product-main'), function (index, element) {
@@ -142,9 +145,12 @@ $(document).ready(function () {
 
     function setProductInLocalstorage(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
+        console.log( JSON.stringify(value));
+        // $.cookie(key, JSON.stringify(value));
+        window.document.cookie = key + '=' + JSON.stringify(value) + ';expires=Thu, 18 Dec 2043 12:00:00 UTC';
     }
 
-    function getProductInLocalstorage(key, value) {
+    function getProductInLocalstorage(key) {
         return JSON.parse(localStorage.getItem(key));
     }
 
@@ -168,5 +174,7 @@ $(document).ready(function () {
         }
 
     }
+
+    
 
 });

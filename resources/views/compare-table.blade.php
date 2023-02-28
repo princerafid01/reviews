@@ -25,9 +25,13 @@
                         <td>{{$site->business_name}}</td>
 
 
-                    @foreach (array_values($site->metadata['compare_attributes']) as $singleAttr )
+                    {{-- @foreach (array_values($site->metadata['compare_attributes']) as $singleAttr )
                         <td>{{$singleAttr}}</td>
-                    @endforeach
+                    @endforeach --}}
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+
                     </tr>
 
 
