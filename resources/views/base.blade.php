@@ -36,7 +36,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/cookieconsent.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?v=').time() }}" rel="stylesheet">
     <link href="{{ asset('css/sweetalert.css') }}" rel="stylesheet">
 
     <!-- Bootstrap Select CDN -->

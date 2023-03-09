@@ -1,44 +1,54 @@
 @extends('base')
 
 @section('content')
-    <div class="container card">
-        <h5>Compare Products</h5>
-    </div>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-xs-12 col-md-12">
-                <h4 class="text-center"> Features </h4>
-                <table>
-                    <tr>
-                        <th style="width:50%">Company</th>
-                        @foreach (explode("," , Options::get_option( 'site_comparer_attributes' )) as $singleAttrHeader )
-                        <th>{{$singleAttrHeader}}</th>
-                        @endforeach
-                    </tr>
-                    @foreach ($sites as $site)
-                    {{-- @foreach ($site->metadata['compare_attributes'] as $attr ) --}}
-                    
-                    
-                    {{-- @endforeach --}}
+    <div class="ptb">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <h2 class="section__title section__title-2 text-center">
+                        {{__('Compare Products')}}
+                    </h2>
+                </div>
+            </div>
+            <div class="row header-mt">
+                <div class="col-xs-12 col-md-12">
+                    <div class="compare_product d-flex align-items-end justify-content-center">
 
-                    <tr>
-                        <td>{{$site->business_name}}</td>
+                        {{-- @foreach ($site->metadata['compare_attributes'] as $attr ) --}}
+                        {{-- @endforeach --}}
 
+                        <div class="feature">
+                            <div class="feature_list">
+                                @foreach (explode("," , Options::get_option( 'site_comparer_attributes' )) as $singleAttrHeader )
+                                    <p>{{$singleAttrHeader}}</p>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="feature_section d-flex justify-content-center">
+                            @foreach ($sites as $site)
+                                <div class="{{ $loop->count==3 ? 'feature_item res-3' : ($loop->count==2 ? 'feature_item res-2' : 'feature_item res-1') }} ">
+                                    <div>
+                                        <h5 class="feature_title">{{$site->business_name}}</h5>
+                                    </div>
+                                    <div class="feature_list">
+                                        <p>None for 365 Days</p>
+                                        <p>Full Month</p>
+                                        <p><i class="fa fa-check"></i></p>
+                                        <p>Locally Staffed</p>
+                                        <p>21-Day Grace Period</p>
+                                        <p>7 Day Money Back</p>
+                                        <p><i class="fa fa-check"></i></p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
 
-                    {{-- @foreach (array_values($site->metadata['compare_attributes']) as $singleAttr )
+                    {{--@foreach (array_values($site->metadata['compare_attributes']) as $singleAttr )
                         <td>{{$singleAttr}}</td>
-                    @endforeach --}}
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
+                    @endforeach--}}
 
-                    </tr>
-
-
-                        
-                    @endforeach
-
-                </table>
+                </div>
             </div>
         </div>
     </div>
@@ -70,11 +80,11 @@
         }
 
         .fa-check {
-            color: green !important;
+            color: #9dca96; !important;
         }
 
         .fa-remove {
-            color: red !important;
+            color: #9dca96 !important;
         }
     </style>
 @endsection
