@@ -33,12 +33,13 @@
                                         </div>
 
                                         @foreach ($sub_cat->children as $sub_sub_cat)
-                                            <div class="cat_sub_sub_title">
-                                                <a href="{{ route('browse-category', ['slug' => $sub_sub_cat->slug]) }}" style="margin-left: 40px">
-                                                    - {{ $sub_sub_cat->name }}
-                                                </a>
-                                            </div>
-
+                                            @if($sub_sub_cat->slug)
+                                                <div class="cat_sub_sub_title">
+                                                    <a href="{{ route('browse-category', ['slug' => $sub_sub_cat->slug]) }}" style="margin-left: 40px">
+                                                        - {{ $sub_sub_cat->name }}
+                                                    </a>
+                                                </div>
+                                            @endif
                                         @endforeach
                                     @endforeach
                                 @endempty
